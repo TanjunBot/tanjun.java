@@ -7,12 +7,16 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
-import tanjun.events.UtilityCommands;
+import tanjun.commands.UtilityCommands;
 import tanjun.utilitys.Logger;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
   public static void main(String[] args) throws Exception{
-    JDA jda = JDABuilder.createDefault("ODMyMjk3MzIxNzkzMzIzMDI4.Gp7GKs.J6hSTiZxY9f4kW98UId8k039voWqsAC46C5xsI")
+    Dotenv dotenv = Dotenv.load();
+    String token = dotenv.get("BotToken");
+
+    JDA jda = JDABuilder.createDefault(token)
             .addEventListeners(new UtilityCommands())
             .setActivity(Activity.playing("Tanjun"))
             .build();
