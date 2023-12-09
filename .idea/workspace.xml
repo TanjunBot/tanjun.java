@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f07990fd-d03e-48c0-9167-ddb09f954460" name="Changes" comment="Initial Commit">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tanjun/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tanjun/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/tanjun/events/UtilityCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tanjun/events/UtilityCommands.java" afterDir="false" />
+    <list default="true" id="f07990fd-d03e-48c0-9167-ddb09f954460" name="Changes" comment="added .env file for sensitive Data e.g. Bot Token">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +26,20 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "EntchenEric"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="800c83ae-3548-491a-8dfe-2f26d4755110" />
+        <option name="url" value="https://github.com/TanjunBot/tanjun.java.git" />
+      </UrlAndAccount>
+    </option>
   </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
@@ -83,7 +93,7 @@
       <option name="presentableId" value="Default" />
       <updated>1702115574621</updated>
       <workItem from="1702115575692" duration="242000" />
-      <workItem from="1702115846938" duration="4566000" />
+      <workItem from="1702115846938" duration="4739000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -101,7 +111,15 @@
       <option name="project" value="LOCAL" />
       <updated>1702118642689</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="added .env file for sensitive Data e.g. Bot Token">
+      <option name="closed" value="true" />
+      <created>1702121670804</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1702121670804</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -120,6 +138,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="Initial Commit" />
+    <MESSAGE value="added .env file for sensitive Data e.g. Bot Token" />
+    <option name="LAST_COMMIT_MESSAGE" value="added .env file for sensitive Data e.g. Bot Token" />
   </component>
 </project>
