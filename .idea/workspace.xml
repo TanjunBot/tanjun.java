@@ -4,8 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f07990fd-d03e-48c0-9167-ddb09f954460" name="Changes" comment="added .env file for sensitive Data e.g. Bot Token">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+    <list default="true" id="f07990fd-d03e-48c0-9167-ddb09f954460" name="Changes" comment="Added .env file to gitignore lol">
+      <change afterPath="$PROJECT_DIR$/src/main/java/tanjun/commands/FunCommands.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tanjun/utilitys/Helper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/tanjun/utilitys/TenorApiWrapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/tanjun/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/tanjun/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,12 +32,12 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "EntchenEric"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;EntchenEric&quot;
   }
-}]]></component>
+}</component>
   <component name="GithubPullRequestsUISettings">
     <option name="selectedUrlAndAccountId">
       <UrlAndAccount>
@@ -93,7 +98,8 @@
       <option name="presentableId" value="Default" />
       <updated>1702115574621</updated>
       <workItem from="1702115575692" duration="242000" />
-      <workItem from="1702115846938" duration="4739000" />
+      <workItem from="1702115846938" duration="5221000" />
+      <workItem from="1702146042355" duration="3870000" />
     </task>
     <task id="LOCAL-00001" summary="Initial Commit">
       <option name="closed" value="true" />
@@ -119,11 +125,22 @@
       <option name="project" value="LOCAL" />
       <updated>1702121670804</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Added .env file to gitignore lol">
+      <option name="closed" value="true" />
+      <created>1702121793072</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1702121793072</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName=".env" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -139,6 +156,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Initial Commit" />
     <MESSAGE value="added .env file for sensitive Data e.g. Bot Token" />
-    <option name="LAST_COMMIT_MESSAGE" value="added .env file for sensitive Data e.g. Bot Token" />
+    <MESSAGE value="Added .env file to gitignore lol" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added .env file to gitignore lol" />
   </component>
 </project>
