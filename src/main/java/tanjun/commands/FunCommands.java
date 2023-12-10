@@ -21,8 +21,6 @@ public class FunCommands extends ListenerAdapter {
   String[] patGifs = TenorApiWrapper.GetUrls("patpat", 15);
   String[] slapGifs = TenorApiWrapper.GetUrls("slap", 15);
   String[] boopGifs = TenorApiWrapper.GetUrls("boop", 15);
-  String[] cryGifs = TenorApiWrapper.GetUrls("cry", 15);
-  String[] highfiveGifs = TenorApiWrapper.GetUrls("highFive", 15);
 
   @Override
   public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
@@ -38,6 +36,7 @@ public class FunCommands extends ListenerAdapter {
           case "pat":
           case "slap":
           case "boop":
+          case "cry":
             event.deferReply().queue();
             User target = event.getOption("user", OptionMapping::getAsUser);
             String message = event.getOption("message", OptionMapping::getAsString);
