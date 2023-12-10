@@ -112,6 +112,7 @@ public class FunCommands extends ListenerAdapter {
 
             embed.setDescription(message);
             embed.setImage(url);
+            embed.setFooter("Via Tenor");
             event.getHook().editOriginalEmbeds(embed.build()).queue();
 
             break;
