@@ -8,15 +8,17 @@ import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
+import tanjun.api.Casino;
 import tanjun.commands.FunCommands;
 import tanjun.commands.UtilityCommands;
+import tanjun.utilitys.DatabaseConnector;
 import tanjun.utilitys.Logger;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
   public static void main(String[] args) throws Exception {
     Dotenv dotenv = Dotenv.load();
-    String token = dotenv.get("BotToken");
+    final String token = dotenv.get("BotToken");
 
     JDA jda = JDABuilder.createDefault(token)
             .addEventListeners(new UtilityCommands())
@@ -60,5 +62,11 @@ public class Main {
     ).queue();
 
     Logger.addLog("Slash Commands Initiated", "System");
+
+    DatabaseConnector.connectToDatabase();
+    DatabaseConnector.initiateDatabase();
+
+    //for testing purposes
+    Casino.playGame("7", 15);
   }
 }
