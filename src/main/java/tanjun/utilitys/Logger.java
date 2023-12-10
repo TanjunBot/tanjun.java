@@ -10,6 +10,11 @@ import java.util.Date;
 public class Logger {
   public static DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 
+  /**
+   * Adds a Message to the Logs.
+   * @param information The Information that should be displayed in the Logs.
+   * @param cause The Cause of the Log. e.g. System, User, ...
+   */
   public static void addLog(String information, String cause) throws IOException {
     Date date = new Date();
     BufferedWriter writer = new BufferedWriter(new FileWriter("logs.log", true));
