@@ -3,6 +3,8 @@ package tanjun.utilitys;
 import net.dv8tion.jda.api.EmbedBuilder;
 
 import java.awt.*;
+import java.sql.Timestamp;
+import java.util.Calendar;
 import java.util.Random;
 
 public class Helper {
@@ -25,5 +27,30 @@ public class Helper {
     embed.setColor(new Color(203, 51, 245));
     return embed;
   }
+
+  /**
+   * Adds n days to a Timestamp. Code from http://www.java2s.com/example/java-utility-method/timestamp/adddays-timestamp-date-int-days-dff0f.html
+   * This accounts for change in TimeZones e.g. the german summer and winter time.
+   * @param date The timestamp you want to add the days to.
+   * @param days The amount of days you want to add.
+   * @return the Timestamp with n days added.
+   */
+  public static Timestamp addDays(Timestamp date, int days) {
+    Calendar cal = Calendar.getInstance();
+    cal.setTime(date);
+    cal.add(Calendar.DATE, days); //minus number would decrement the days
+    return new Timestamp(cal.getTime().getTime());
+  }
+
+  /**
+   * Calculates the Log of the number n to a specified Base.
+   * @param n the Number you want to calculate the log from.
+   * @param base the Base of the log.
+   * @return the log of the number n to the given base.
+   */
+  public static double log(int n, int base){
+    return Math.log(n) / Math.log(base);
+  }
+
 
 }

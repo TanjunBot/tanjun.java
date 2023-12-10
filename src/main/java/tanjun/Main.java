@@ -67,6 +67,11 @@ public class Main {
     DatabaseConnector.initiateDatabase();
 
     //for testing purposes
+    System.out.println(Casino.checkIfPlayerExists("7"));
+    System.out.println(Casino.getMoney("7"));
+
     Casino.playGame("7", 15);
+
+    Casino.claimDaily("7");
   }
 }
