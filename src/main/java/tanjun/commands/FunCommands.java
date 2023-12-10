@@ -37,6 +37,7 @@ public class FunCommands extends ListenerAdapter {
           case "kiss":
           case "pat":
           case "slap":
+          case "boop":
             event.deferReply().queue();
             User target = event.getOption("user", OptionMapping::getAsUser);
             String message = event.getOption("message", OptionMapping::getAsString);
@@ -95,8 +96,17 @@ public class FunCommands extends ListenerAdapter {
                 } catch (IOException e) {
                   throw new RuntimeException(e);
                 }
-                url = Helper.getRandom(patGifs);
+                url = Helper.getRandom(slapGifs);
                 embed.setTitle(event.getUser().getName() + " slaps " + target.getName());
+                break;
+              case "boop":
+                try {
+                  Logger.addLog("boop command was run.", event.getUser().getId());
+                } catch (IOException e) {
+                  throw new RuntimeException(e);
+                }
+                url = Helper.getRandom(boopGifs);
+                embed.setTitle(event.getUser().getName() + " boops " + target.getName());
                 break;
             }
 
