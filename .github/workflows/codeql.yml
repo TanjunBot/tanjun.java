@@ -47,7 +47,7 @@ jobs:
     - name: Prüfe Repository
       uses: actions/checkout@v3
 
-    - name: Set up JDK
+    - name: JDK konfigurieren
       uses: actions/setup-java@v2
       with:
         distribution: 'adopt'
