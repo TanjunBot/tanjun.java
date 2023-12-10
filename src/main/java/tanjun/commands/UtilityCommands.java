@@ -9,20 +9,18 @@ import java.io.IOException;
 public class UtilityCommands extends ListenerAdapter {
   @Override
   public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
-    switch (event.getName()) {
-      //Sends a Message containing the current Ping.
-      case "ping":
-        long time = System.currentTimeMillis();
-        try {
-          Logger.addLog("Ping command was run.", event.getUser().getId());
-        } catch (IOException e) {
-          throw new RuntimeException(e);
-        }
-        event.reply("Pong!").setEphemeral(true).
-                flatMap(v ->
-                  event.getHook().editOriginalFormat("Pong: %d ms", System.currentTimeMillis() - time
-                )
-        ).queue();
+    if (event.getName().equals("ping")) {
+      long time = System.currentTimeMillis();
+      try {
+        Logger.addLog("Ping command was run.", event.getUser().getId());
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+      event.reply("Pong!").setEphemeral(true).
+              flatMap(v ->
+                      event.getHook().editOriginalFormat("Pong: %d ms", System.currentTimeMillis() - time
+                      )
+              ).queue();
     }
   }
 }
