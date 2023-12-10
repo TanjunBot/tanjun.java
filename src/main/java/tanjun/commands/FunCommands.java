@@ -75,7 +75,7 @@ public class FunCommands extends ListenerAdapter {
                 } catch (IOException e) {
                   throw new RuntimeException(e);
                 }
-                url = Helper.getRandom(waveGifs);
+                url = Helper.getRandom(kissGifs);
                 embed.setTitle(event.getUser().getName() + " is kissing " + target.getName());
                 break;
             }
