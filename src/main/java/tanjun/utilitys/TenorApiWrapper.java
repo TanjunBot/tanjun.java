@@ -48,13 +48,15 @@ public class TenorApiWrapper{
    * @return a String Array containing the URLs of the found Gifs.
    */
   public static String[] GetUrls(String searchTerm, int limit){
-    List<String> urls = new ArrayList<String>();
+    List<String> urls = new ArrayList<>();
     JSONObject response = getSearchResults(searchTerm, limit);
     assert response != null;
     JSONArray results = (JSONArray) response.get("results");
     for (int i = 0; i < results.length(); i++) {
-      JSONObject result = (JSONObject) results.get(i);
-      urls.add((String) result.get("url"));
+      JSONObject result = results.getJSONObject(i);
+      JSONObject mediaFormats = result.getJSONObject("media_formats");
+      JSONObject tinyGif = mediaFormats.getJSONObject("tinygif");
+      urls.add((String) tinyGif.get("url"));
     }
     return urls.toArray(new String[0]);
   }
