@@ -50,6 +50,7 @@ public class TenorApiWrapper{
   public static String[] GetUrls(String searchTerm, int limit){
     List<String> urls = new ArrayList<String>();
     JSONObject response = getSearchResults(searchTerm, limit);
+    assert response != null;
     JSONArray results = (JSONArray) response.get("results");
     for (int i = 0; i < results.length(); i++) {
       JSONObject result = (JSONObject) results.get(i);
