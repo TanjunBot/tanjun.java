@@ -64,9 +64,8 @@ jobs:
     # If this step fails, then you should remove it and run the build manually (see below)
     - name: Build
       run: |
-          echo "Run, Build using script"
-          mvn compile
-          mvn package
+          echo "Building using script..."
+          mvn clean install
     #uses: github/codeql-action/autobuild@v2
 
     # ℹ️ Command-line programs to run using the OS shell.
