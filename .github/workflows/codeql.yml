@@ -47,6 +47,13 @@ jobs:
     - name: Prüfe Repository
       uses: actions/checkout@v3
 
+    - name: Set up JDK
+      uses: actions/setup-java@v2
+      with:
+        distribution: 'adopt'
+        java-version: '21'  # Oder die Java-Version, die für dein Projekt erforderlich ist
+
+
     # Initializes the CodeQL tools for scanning.
     - name: CodeQL initialisieren
       uses: github/codeql-action/init@v2
