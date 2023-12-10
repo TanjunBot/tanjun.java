@@ -50,6 +50,9 @@ public class Main {
                                     .addOption(OptionType.STRING, "message", "A Additional Message you want to Send.", false),
                             new SubcommandData("pat", "pat a User")
                                     .addOption(OptionType.USER, "user", "The user to pat", true)
+                                    .addOption(OptionType.STRING, "message", "A Additional Message you want to Send.", false),
+                            new SubcommandData("slap", "slap a User")
+                                    .addOption(OptionType.USER, "user", "The user to slap", true)
                                     .addOption(OptionType.STRING, "message", "A Additional Message you want to Send.", false)
                     )
     ).queue();
