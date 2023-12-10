@@ -38,6 +38,9 @@ public class Main {
                     .addSubcommands(
                             new SubcommandData("hug", "hug a User")
                                     .addOption(OptionType.USER, "user", "The user to hug", true)
+                                    .addOption(OptionType.STRING, "message", "A Additional Message you want to Send.", false),
+                            new SubcommandData("eat", "eat a User")
+                                    .addOption(OptionType.USER, "user", "The user to eat", true)
                                     .addOption(OptionType.STRING, "message", "A Additional Message you want to Send.", false)
                     )
     ).queue();
