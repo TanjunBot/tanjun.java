@@ -11,7 +11,6 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,9 +96,7 @@ public class TenorApiWrapper{
   private static JSONObject parser(HttpURLConnection connection) throws JSONException {
     char[] buffer = new char[1024 * 4];
     int n;
-    InputStream stream = null;
-    try {
-      stream = new BufferedInputStream(connection.getInputStream());
+    try (InputStream stream = new BufferedInputStream(connection.getInputStream())) {
       InputStreamReader reader = new InputStreamReader(stream, StandardCharsets.UTF_8);
       StringWriter writer = new StringWriter();
       while (-1 != (n = reader.read(buffer))) {
@@ -107,13 +104,6 @@ public class TenorApiWrapper{
       }
       return new JSONObject(writer.toString());
     } catch (IOException ignored) {
-    } finally {
-      if (stream != null) {
-        try {
-          stream.close();
-        } catch (IOException ignored) {
-        }
-      }
     }
     return new JSONObject("");
   }

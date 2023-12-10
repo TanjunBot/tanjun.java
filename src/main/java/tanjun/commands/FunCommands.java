@@ -1,7 +1,6 @@
 package tanjun.commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -11,7 +10,6 @@ import tanjun.utilitys.Logger;
 import tanjun.utilitys.TenorApiWrapper;
 
 import java.io.IOException;
-import java.util.Collection;
 
 public class FunCommands extends ListenerAdapter {
   String[] huggingGifs = TenorApiWrapper.GetUrls("hug", 15);
