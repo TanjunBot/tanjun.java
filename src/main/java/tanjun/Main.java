@@ -41,6 +41,9 @@ public class Main {
                                     .addOption(OptionType.STRING, "message", "A Additional Message you want to Send.", false),
                             new SubcommandData("eat", "eat a User")
                                     .addOption(OptionType.USER, "user", "The user to eat", true)
+                                    .addOption(OptionType.STRING, "message", "A Additional Message you want to Send.", false),
+                            new SubcommandData("wave", "wave to a User")
+                                    .addOption(OptionType.USER, "user", "The user to wave to", true)
                                     .addOption(OptionType.STRING, "message", "A Additional Message you want to Send.", false)
                     )
     ).queue();
