@@ -38,6 +38,25 @@ public class Casino {
   }
 
   /**
+   * Fetches the Data of a specified Player from the Casino-
+   * @param userid the ID of the User you want to fetch.
+   * @return the Player Data from the specified user. May be null.
+   */
+  public static ResultSet getPlayerData(String userid) throws SQLException, IOException {
+    addCasinoPlayer(userid);
+    Logger.addLog("trying to get the User Data from " + userid + ".", "API");
+    Statement statement = DatabaseConnector.connection.createStatement();
+    String query = "SELECT * FROM casinoUser WHERE id = " + userid;
+    ResultSet result = statement.executeQuery(query);
+    if(!result.next()){
+      Logger.addLog("Was not able to get Player Data from " + userid + ".", "API");
+      return null;
+    }
+    Logger.addLog("Successfully fetched Player Data form " + userid + ".", "API");
+    return result;
+  }
+
+  /**
    * Rather the time a user last collected the daily reward is a day ago or not.
    *
    * @param userid the ID you want to check if he is allowed to collect the daily reward.
