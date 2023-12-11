@@ -74,6 +74,9 @@ public class Casino {
       return false;
     }
     Timestamp timestampLastDaily = result.getTimestamp(1);
+    if(timestampLastDaily == null){
+      return true;
+    }
     Timestamp oneDayAfterLastDaily = Helper.addDays(timestampLastDaily, 1);
     return oneDayAfterLastDaily.after(timestampNow);
   }
@@ -94,7 +97,14 @@ public class Casino {
     Statement statement = DatabaseConnector.connection.createStatement();
     String query = "SELECT lastDaily FROM casinoUser WHERE id = " + userid;
     ResultSet result = statement.executeQuery(query);
+    if(!result.next()){
+      Logger.addLog("Could not find lastDaily from " + userid + ".", "API");
+      return 9999;
+    }
     Timestamp timestampLastDaily = result.getTimestamp(1);
+    if(timestampLastDaily == null){
+      return -999999999;
+    }
     return (timestampNow.getTime() - timestampLastDaily.getTime()) / 1000;
   }
 
@@ -122,7 +132,7 @@ public class Casino {
    * @param userid the ID of the Casino Player that shall claim the Daily reward.
    * @return the reward the user got. If 0, then the Daily Reward was not given.
    */
-  public static long claimDaily(String userid) throws SQLException, IOException {
+  public static int claimDaily(String userid) throws SQLException, IOException {
     addCasinoPlayerIfNotExists(userid);
     Logger.addLog("giving the Casino Daily reward to " + userid + ".", "API");
     if (!canRecieveDailyReward(userid)) {
@@ -130,18 +140,16 @@ public class Casino {
       return 0;
     }
     int currentStreak = dailyStreak(userid);
-    if (currentStreak == 0) {
-      return 0;
-    }
     currentStreak += 1;
     if(secondsUntillAllowedToCollectDaily(userid) <= -(24*60*60*60)){
       currentStreak = 1;
     }
-    long reward = ((long) Helper.log(currentStreak, 2) + 1) * 100;
+    int reward = ((int) Helper.log(currentStreak, 2) + 1) * 100;
     Statement statement = DatabaseConnector.connection.createStatement();
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-    String query = "UPDATE casinoUser SET money = casinoUser.money + " + reward + ", lastDaily = " + timestamp +
-            ", dailyStreak = " + currentStreak + userid;
+    String query = "UPDATE casinoUser SET money = casinoUser.money + " + reward + ", lastDaily = '" + timestamp +
+            "', dailyStreak = " + currentStreak + " WHERE id = " + userid;
+    System.out.println("Query: " + query);
     int result = statement.executeUpdate(query);
     boolean successfully = result == 0;
     if (successfully) {
