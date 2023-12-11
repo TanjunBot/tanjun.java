@@ -73,7 +73,8 @@ public class Main {
 
         Casino.playGame("7", 15);
 
-
-        System.out.println("claimed Daily: " + Casino.claimDaily("8"));
+        System.out.println(Casino.canRecieveDailyReward("7"));
+        System.out.println(Casino.canRecieveDailyReward("10"));
+        System.out.println("claimed Daily: " + Casino.claimDaily("12"));
     }
 }

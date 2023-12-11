@@ -28,7 +28,7 @@ public class Casino {
             "casinoUser.gamesPlayed + 1, lastPlayed = '" + timestamp + "' WHERE " +
             "id = " + userid;
     int result = statement.executeUpdate(query);
-    boolean successfully = result == 0;
+    boolean successfully = result != 0;
     if (successfully) {
       Logger.addLog("Data changed Successfully.", "API");
     } else {
@@ -78,7 +78,9 @@ public class Casino {
       return true;
     }
     Timestamp oneDayAfterLastDaily = Helper.addDays(timestampLastDaily, 1);
-    return oneDayAfterLastDaily.after(timestampNow);
+      System.out.println("Timestamp last Daily: " + timestampLastDaily);
+      System.out.println("Timestamp in a Day: " + oneDayAfterLastDaily);
+    return timestampNow.after(oneDayAfterLastDaily);
   }
 
   /**
@@ -145,13 +147,15 @@ public class Casino {
       currentStreak = 1;
     }
     int reward = ((int) Helper.log(currentStreak, 2) + 1) * 100;
+    System.out.println("Reward: " + reward);
     Statement statement = DatabaseConnector.connection.createStatement();
     Timestamp timestamp = new Timestamp(System.currentTimeMillis());
     String query = "UPDATE casinoUser SET money = casinoUser.money + " + reward + ", lastDaily = '" + timestamp +
-            "', dailyStreak = " + currentStreak + " WHERE id = " + userid;
+            "', dailyStreak = " + currentStreak + ", totalDaily = casinoUser.totalDaily + 1 WHERE id = " + userid;
     System.out.println("Query: " + query);
     int result = statement.executeUpdate(query);
-    boolean successfully = result == 0;
+    System.out.println("result: " + result);
+    boolean successfully = result != 0;
     if (successfully) {
       Logger.addLog("Daily Reward was successfully given to " + userid + ".", "API");
       return reward;
@@ -212,7 +216,7 @@ public class Casino {
     Statement statement = DatabaseConnector.connection.createStatement();
     String query = "UPDATE casinoUser SET money = casinoUser.money + " + amount + " WHERE id = " + userid;
     int result = statement.executeUpdate(query);
-    boolean successfully = result == 0;
+    boolean successfully = result != 0;
     if (successfully) {
       Logger.addLog("Gave " + userid + " successfully " + amount + " Casino Money.", "API");
     } else {
@@ -251,7 +255,7 @@ public class Casino {
     Statement statement = DatabaseConnector.connection.createStatement();
     String query = "INSERT INTO casinoUser (id) VALUES (" + userid + ")";
     int result = statement.executeUpdate(query);
-    boolean successfully = result == 0;
+    boolean successfully = result != 0;
     if (successfully) {
       Logger.addLog("Successfully added CasinoPlayer.", "API");
     } else {
