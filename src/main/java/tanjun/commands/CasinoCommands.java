@@ -99,11 +99,15 @@ public class CasinoCommands extends ListenerAdapter {
                 embed.setDescription("You dont have enough Money to transfer " + amount + " to " + target.getAsMention()
                         + ". You are missing " + (amount - money) + ".");
               } else {
-                boolean transferSuccessfully = Casino.transferMoney(sender.getId(), target.getId(), amount);
-                if (transferSuccessfully) {
-                  embed.setDescription("You have successfully transferred " + amount + " money to " + target.getAsMention() + ".");
+                if(money > 0){
+                  embed.setDescription("You cant transfer that less money.");
                 } else {
-                  embed.setDescription("The transfer was not successfully. you may not have enough money.");
+                  boolean transferSuccessfully = Casino.transferMoney(sender.getId(), target.getId(), amount);
+                  if (transferSuccessfully) {
+                    embed.setDescription("You have successfully transferred " + amount + " money to " + target.getAsMention() + ".");
+                  } else {
+                    embed.setDescription("The transfer was not successfully. you may not have enough money.");
+                  }
                 }
               }
             } catch (SQLException e) {

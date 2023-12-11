@@ -79,7 +79,6 @@ public class Main {
 
                     )
     ).queue();
-
     Logger.addLog("Slash Commands Initiated", "System");
 
     DatabaseConnector.connectToDatabase();
