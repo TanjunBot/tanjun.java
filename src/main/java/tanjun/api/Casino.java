@@ -39,16 +39,17 @@ public class Casino {
 
   /**
    * Fetches the Data of a specified Player from the Casino-
+   *
    * @param userid the ID of the User you want to fetch.
    * @return the Player Data from the specified user. May be null.
    */
   public static ResultSet getPlayerData(String userid) throws SQLException, IOException {
-    addCasinoPlayer(userid);
+    addCasinoPlayerIfNotExists(userid);
     Logger.addLog("trying to get the User Data from " + userid + ".", "API");
     Statement statement = DatabaseConnector.connection.createStatement();
     String query = "SELECT * FROM casinoUser WHERE id = " + userid;
     ResultSet result = statement.executeQuery(query);
-    if(!result.next()){
+    if (!result.next()) {
       Logger.addLog("Was not able to get Player Data from " + userid + ".", "API");
       return null;
     }
@@ -69,17 +70,17 @@ public class Casino {
     Statement statement = DatabaseConnector.connection.createStatement();
     String query = "SELECT lastDaily FROM casinoUser WHERE id = " + userid;
     ResultSet result = statement.executeQuery(query);
-    if(!result.next()){
+    if (!result.next()) {
       Logger.addLog("could not retrieve lastDaily from the Database where userid = " + userid + ".", "API");
       return false;
     }
     Timestamp timestampLastDaily = result.getTimestamp(1);
-    if(timestampLastDaily == null){
+    if (timestampLastDaily == null) {
       return true;
     }
     Timestamp oneDayAfterLastDaily = Helper.addDays(timestampLastDaily, 1);
-      System.out.println("Timestamp last Daily: " + timestampLastDaily);
-      System.out.println("Timestamp in a Day: " + oneDayAfterLastDaily);
+    System.out.println("Timestamp last Daily: " + timestampLastDaily);
+    System.out.println("Timestamp in a Day: " + oneDayAfterLastDaily);
     return timestampNow.after(oneDayAfterLastDaily);
   }
 
@@ -99,12 +100,12 @@ public class Casino {
     Statement statement = DatabaseConnector.connection.createStatement();
     String query = "SELECT lastDaily FROM casinoUser WHERE id = " + userid;
     ResultSet result = statement.executeQuery(query);
-    if(!result.next()){
+    if (!result.next()) {
       Logger.addLog("Could not find lastDaily from " + userid + ".", "API");
       return 9999;
     }
     Timestamp timestampLastDaily = result.getTimestamp(1);
-    if(timestampLastDaily == null){
+    if (timestampLastDaily == null) {
       return -999999999;
     }
     return (timestampNow.getTime() - timestampLastDaily.getTime()) / 1000;
@@ -131,6 +132,7 @@ public class Casino {
 
   /**
    * Gives the Daily reward to a Casino Player, if they're allowed to claim the Daily reward.
+   *
    * @param userid the ID of the Casino Player that shall claim the Daily reward.
    * @return the reward the user got. If 0, then the Daily Reward was not given.
    */
@@ -143,7 +145,7 @@ public class Casino {
     }
     int currentStreak = dailyStreak(userid);
     currentStreak += 1;
-    if(secondsUntillAllowedToCollectDaily(userid) <= -(24*60*60*60)){
+    if (secondsUntillAllowedToCollectDaily(userid) <= -(24 * 60 * 60 * 60)) {
       currentStreak = 1;
     }
     int reward = ((int) Helper.log(currentStreak, 2) + 1) * 100;
@@ -159,7 +161,7 @@ public class Casino {
     if (successfully) {
       Logger.addLog("Daily Reward was successfully given to " + userid + ".", "API");
       return reward;
-    } else{
+    } else {
       Logger.addLog("Was not able to give Daily Reward to " + userid + ".", "API");
       return 0;
     }
@@ -266,13 +268,14 @@ public class Casino {
 
   /**
    * Creates a Casino Player if he does not yet Exist in the database.
+   *
    * @param userid the ID of the user you want to check.
    * @return rather the operation was successfully. (not if the player was inserted to the database)
    */
   public static Boolean addCasinoPlayerIfNotExists(String userid) throws SQLException, IOException {
     if (!checkIfPlayerExists(userid)) {
       return addCasinoPlayer(userid);
-    } else{
+    } else {
       return true;
     }
   }
@@ -288,6 +291,8 @@ public class Casino {
     Statement statement = DatabaseConnector.connection.createStatement();
     String query = "SELECT id FROM casinoUser WHERE id = " + userid;
     ResultSet result = statement.executeQuery(query);
-    return result.next();
+    boolean existent = result.next();
+    Logger.addLog("Result of check if user " + userid + " Exists: " + existent, "API");
+    return existent;
   }
 }

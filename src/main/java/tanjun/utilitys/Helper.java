@@ -10,6 +10,7 @@ import java.util.Random;
 public class Helper {
   /**
    * Chooses a random entry of a String Array.
+   *
    * @param array The Array containing the Strings from which a random string shall be chosen.
    * @return a random entry of the Array.
    */
@@ -20,9 +21,10 @@ public class Helper {
 
   /**
    * Creates the default Embed builder. Used so that every Embed looks the same e.g. have the same color.
+   *
    * @return an EmbedBuilder with the correct base settings.
    */
-  public static EmbedBuilder defaultEmbed(){
+  public static EmbedBuilder defaultEmbed() {
     EmbedBuilder embed = new EmbedBuilder();
     embed.setColor(new Color(203, 51, 245));
     return embed;
@@ -31,6 +33,7 @@ public class Helper {
   /**
    * Adds n days to a Timestamp. Code from http://www.java2s.com/example/java-utility-method/timestamp/adddays-timestamp-date-int-days-dff0f.html
    * This accounts for change in TimeZones e.g. the german summer and winter time.
+   *
    * @param date The timestamp you want to add the days to.
    * @param days The amount of days you want to add.
    * @return the Timestamp with n days added.
@@ -44,11 +47,12 @@ public class Helper {
 
   /**
    * Calculates the Log of the number n to a specified Base.
-   * @param n the Number you want to calculate the log from.
+   *
+   * @param n    the Number you want to calculate the log from.
    * @param base the Base of the log.
    * @return the log of the number n to the given base.
    */
-  public static double log(int n, int base){
+  public static double log(int n, int base) {
     return Math.log(n) / Math.log(base);
   }
 
