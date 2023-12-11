@@ -65,7 +65,18 @@ public class Main {
             Commands.slash("casino", "commands to interact with Users")
                     .addSubcommands(
                             new SubcommandData("info", "get the Casino Information of a User.")
-                                    .addOption(OptionType.USER, "user", "The user you want to get the Information from.", false)
+                                    .addOption(OptionType.USER, "user", "The user you want to get the " +
+                                            "Information from.", false),
+                            new SubcommandData("daily", "Collect your Daily Casino Reward."),
+                            new SubcommandData("transfer", "Transfer Money to someone.")
+                                    .addOption(OptionType.USER, "user", "The user you want to transfer " +
+                                            "the money to.", true)
+                                    .addOption(OptionType.INTEGER, "amount", "The amount of money you " +
+                                            "want to transfer.", true),
+                            new SubcommandData("slots", "Play slots in the Casino.")
+                                    .addOption(OptionType.INTEGER, "amount", "the amount of Money you want to bet.")
+
+
                     )
     ).queue();
 

@@ -41,14 +41,14 @@ public class CasinoCommands extends ListenerAdapter {
             String embedDescription = "### Money ➤ " + money + "\n";
             embedDescription += "### games Played ➤ " + gamesPlayed + "\n";
             if (!(lastPlayed == null)) {
-              embedDescription += "### last Played ➤ <t:" + (int) lastPlayed.getTime() + ":r>\n";
+              embedDescription += "### last Played ➤ <t:" + lastPlayed.getTime() / 1000 + ":R>\n";
             } else {
               embedDescription += "### last Played ➤ never\n";
             }
             embedDescription += "### current Daily Streak ➤ " + dailyStreak + "\n";
             embedDescription += "### total Daily collected ➤ " + totalDaily + "\n";
             if (!(lastDaily == null)) {
-              embedDescription += "### last Daily collected ➤ <t:" + (int) lastDaily.getTime() + ":r>";
+              embedDescription += "### last Daily collected ➤ <t:" + lastDaily.getTime() / 1000 + ":R>";
             } else {
               embedDescription += "### last Daily collected ➤ never";
             }
@@ -62,6 +62,58 @@ public class CasinoCommands extends ListenerAdapter {
           }
           embed.setFooter("tanjun.java Casino");
           event.getHook().editOriginalEmbeds(embed.build()).queue();
+          break;
+        }
+        case "daily": {
+          String userId = event.getUser().getId();
+          embed.setTitle("Daily Reward");
+          try {
+            long secondsUntillAllowedToCollectDaily = Casino.secondsUntillAllowedToCollectDaily(userId);
+            if (secondsUntillAllowedToCollectDaily > 0) {
+              embed.setDescription("You are not yet allowed to collect the Daily reward. Try again in <t:" + secondsUntillAllowedToCollectDaily + ":r>");
+            } else {
+              int reward = Casino.claimDaily(userId);
+              embed.setDescription("You successfully claimed your Daily reward. You gained " + reward + " Money.");
+            }
+          } catch (SQLException e) {
+            embed.setDescription("I was unable to give you your Daily reward" +
+                    " from the Database. You may want to report this Error: \n" + e);
+          } catch (IOException e) {
+            embed.setDescription("I was unable to give you your Daily reward" +
+                    " because I could not write to the logs. You may want to report this Error: \n" + e);
+          }
+          embed.setFooter("tanjun.java Casino");
+          event.getHook().editOriginalEmbeds(embed.build()).queue();
+          break;
+        }
+        case "transfer": {
+          User target = event.getOption("user", OptionMapping::getAsUser);
+          User sender = event.getUser();
+          int amount = event.getOption("amount", OptionMapping::getAsInt);
+          if (target == null) {
+            embed.setDescription("You have to specifie a User you want to transfer money to.");
+          } else {
+            try {
+              int money = Casino.getMoney(sender.getId());
+              if (money < amount) {
+                embed.setDescription("You dont have enough Money to transfer " + amount + " to " + target.getAsMention()
+                        + ". You are missing " + (amount - money) + ".");
+              } else {
+                boolean transferSuccessfully = Casino.transferMoney(sender.getId(), target.getId(), amount);
+                if (transferSuccessfully) {
+                  embed.setDescription("You have successfully transferred " + amount + " money to " + target.getAsMention() + ".");
+                } else {
+                  embed.setDescription("The transfer was not successfully. you may not have enough money.");
+                }
+              }
+            } catch (SQLException e) {
+              embed.setDescription("I was unable to finish the transfer because of a error" +
+                      " from the Database. You may want to report this Error: \n" + e);
+            } catch (IOException e) {
+              embed.setDescription("I was unable to finish the transfer" +
+                      " because I could not write to the logs. You may want to report this Error: \n" + e);
+            }
+          }
         }
         case null:
           try {
