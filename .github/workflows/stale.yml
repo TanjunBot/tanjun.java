@@ -1,4 +1,4 @@
-name: 'Inaktive Issues und Pull Requests schließen'
+name: 'Close inactive issues and pull requests'
 permissions:
   issues: write
   pull-requests: write
