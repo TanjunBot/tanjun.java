@@ -181,7 +181,7 @@ public class Casino {
     addCasinoPlayerIfNotExists(sender);
     addCasinoPlayerIfNotExists(receiver);
     int senderMoney = getMoney(sender);
-    if (amount >= senderMoney) {
+    if (amount <= senderMoney) {
       boolean takingMoneySuccessfully = giveMoney(sender, amount * -1);
       if (!takingMoneySuccessfully) {
         Logger.addLog("Failed to transfer Casino money from " + sender + " to " + receiver + ". Was not able " +
@@ -198,7 +198,7 @@ public class Casino {
       Logger.addLog("transferred Casino money from " + sender + " to " + receiver + " Successfully.", "API");
       return true;
     } else {
-      Logger.addLog("Failed to transfer Casino money from " + sender + " to " + receiver + ". Sender does not" +
+      Logger.addLog("Failed to transfer Casino money from " + sender + " to " + receiver + ". Sender does not " +
               "have enough Money.", "API");
       return false;
     }
@@ -243,7 +243,9 @@ public class Casino {
       Logger.addLog("could not fetch money from " + userid, "API");
       return 0;
     }
-    return result.getInt(1);
+    int money = result.getInt(1);
+    Logger.addLog("Successfully fetched Casino Money from " + userid + ". They have " + money + " money.", "API");
+    return money;
   }
 
   /**
