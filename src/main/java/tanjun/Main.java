@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
+import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import tanjun.api.Casino;
 import tanjun.commands.CasinoCommands;
@@ -65,16 +66,17 @@ public class Main {
             Commands.slash("casino", "commands to interact with Users")
                     .addSubcommands(
                             new SubcommandData("info", "get the Casino Information of a User.")
-                                    .addOption(OptionType.USER, "user", "The user you want to get the " +
-                                            "Information from.", false),
+                                    .addOptions(new OptionData(OptionType.USER, "user", "The user you want to get the " +
+                                            "Information from.", false)),
                             new SubcommandData("daily", "Collect your Daily Casino Reward."),
                             new SubcommandData("transfer", "Transfer Money to someone.")
-                                    .addOption(OptionType.USER, "user", "The user you want to transfer " +
-                                            "the money to.", true)
-                                    .addOption(OptionType.INTEGER, "amount", "The amount of money you " +
-                                            "want to transfer.", true),
+                                    .addOptions(new OptionData(OptionType.USER, "user", "The user you want to transfer " +
+                                                    "the money to.", true),
+                                            new OptionData(OptionType.INTEGER, "amount", "The amount of money you " +
+                                                    "want to transfer.", true).setRequiredRange(0, 1000000)),
                             new SubcommandData("slots", "Play slots in the Casino.")
-                                    .addOption(OptionType.INTEGER, "amount", "the amount of Money you want to bet.")
+                                    .addOptions(new OptionData(OptionType.INTEGER, "amount", "the amount" +
+                                            " of Money you want to bet.").setRequiredRange(0, 1000000))
 
 
                     )
@@ -83,15 +85,5 @@ public class Main {
 
     DatabaseConnector.connectToDatabase();
     DatabaseConnector.initiateDatabase();
-
-    //for testing purposes
-    System.out.println(Casino.checkIfPlayerExists("7"));
-    System.out.println(Casino.getMoney("7"));
-
-    Casino.playGame("7", 15);
-
-    System.out.println(Casino.canRecieveDailyReward("7"));
-    System.out.println(Casino.canRecieveDailyReward("10"));
-    System.out.println("claimed Daily: " + Casino.claimDaily("12"));
   }
 }
