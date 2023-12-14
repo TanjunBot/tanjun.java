@@ -13,6 +13,7 @@ import tanjun.api.Casino;
 import tanjun.commands.CasinoCommands;
 import tanjun.commands.FunCommands;
 import tanjun.commands.UtilityCommands;
+import tanjun.listener.ButtonListener;
 import tanjun.utilitys.DatabaseConnector;
 import tanjun.utilitys.Helper;
 import tanjun.utilitys.Logger;
@@ -27,6 +28,7 @@ public class Main {
             .addEventListeners(new UtilityCommands())
             .addEventListeners(new FunCommands())
             .addEventListeners(new CasinoCommands())
+            .addEventListeners(new ButtonListener())
             .setActivity(Activity.playing("Tanjun"))
             .build();
 
@@ -76,7 +78,10 @@ public class Main {
                                                     "want to transfer.", true).setRequiredRange(0, 1000000)),
                             new SubcommandData("slots", "Play slots in the Casino.")
                                     .addOptions(new OptionData(OptionType.INTEGER, "amount", "the amount" +
-                                            " of Money you want to bet.").setRequiredRange(0, 1000000))
+                                            " of Money you want to bet.", true).setRequiredRange(0, 1000000)),
+                            new SubcommandData("blackjack", "Play blackjack in the Casino..")
+                                    .addOptions(new OptionData(OptionType.INTEGER, "amount", "the amount" +
+                                            " of Money you want to bet.", true).setRequiredRange(0, 1000000))
 
 
                     )

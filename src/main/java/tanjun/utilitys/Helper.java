@@ -56,5 +56,17 @@ public class Helper {
     return Math.log(n) / Math.log(base);
   }
 
+  /**
+   * Adds a String to a String Array.
+   * @param array the Array you want to add the String to.
+   * @param element the String you want to add to the Array.
+   * @return the Array with the String added.
+   */
+  public static String[] addToArray(String[] array, String element) {
+    String[] newArray = new String[array.length + 1];
+    System.arraycopy(array, 0, newArray, 0, array.length);
+    newArray[array.length] = element;
+    return newArray;
+  }
 
 }
