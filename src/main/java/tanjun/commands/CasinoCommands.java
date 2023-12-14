@@ -210,9 +210,20 @@ class BlackJack extends CardGame {
   public String startGame(int bet, String userId) {
 
     try {
-      Logger.addLog("Starting a new Blackjack game with " + bet + " Money bet.", "BlackJack");
+      if(Casino.getMoney(userId) < bet) {
+
+        return "You don't have enough Money you FaceHuman";
+      };
+
+      try {
+        Logger.addLog("Starting a new Blackjack game with " + bet + " Money bet.", "BlackJack");
+      } catch (IOException e) {
+        return "I was unable to start a new Blackjack game. You may want to report this Error: \n" + e;
+      }
+    } catch (SQLException e) {
+      return "I was unable to get the Money. You may want to report this Error: \n" + e;
     } catch (IOException e) {
-      return "I was unable to start a new Blackjack game. You may want to report this Error: \n" + e;
+      return "I was unable to get the Money. You may want to report this Error: \n" + e;
     }
     try {
       playerId = addPlayerhand(2);
@@ -257,9 +268,9 @@ class BlackJack extends CardGame {
     } else {
       try {
         if (getCardValue(getPlayerhand(playerId)) == 21){
-            Casino.playGame(playerDiscordId, bet * 2);
-            return "You have a Blackjack. You won " + bet * 2 + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                    + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(getPlayerhand(playerId));
+          Casino.playGame(playerDiscordId, bet * 2);
+          return "You have a Blackjack. You won " + bet * 2 + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
+                  + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(getPlayerhand(playerId));
         }
       } catch (IOException e) {
         return "I was unable to get the Player hand. You may want to report this Error: \n" + e;
@@ -297,34 +308,34 @@ class BlackJack extends CardGame {
       while(getCardValue(getPlayerhand(croupierId)) < 17){
         drawPlayerCard(croupierId);
       }
-        List<String> croupierHand = getPlayerhand(croupierId);
-        int croupierHandValue = getCardValue(croupierHand);
-        if(croupierHandValue > 21){
-          Casino.playGame(playerDiscordId, bet);
-          Logger.addLog("The Croupier hand is over 21. Blackjack Game was ended successfully.", "BlackJack");
-          return "You won " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
-        }
-        if(croupierHandValue > playerHandValue){
-          Casino.playGame(playerDiscordId, bet * -1);
-          Logger.addLog("The Croupier hand is higher than the Player hand. Blackjack Game was ended successfully.", "BlackJack");
-          return "You lost " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
-        }
-        if(croupierHandValue < playerHandValue){
-          Casino.playGame(playerDiscordId, bet);
-          Logger.addLog("The Player hand is higher than the Croupier hand. Blackjack Game was ended successfully.", "BlackJack");
-          return "You won " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
-        }
-        if(croupierHandValue == playerHandValue){
-          Casino.playGame(playerDiscordId, 0);
-          Logger.addLog("The Croupier and the Player have the same hand value. Blackjack Game was ended successfully.", "BlackJack");
-          return "The Croupier and you have the same hand value. You get your Money back.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
-        }
+      List<String> croupierHand = getPlayerhand(croupierId);
+      int croupierHandValue = getCardValue(croupierHand);
+      if(croupierHandValue > 21){
+        Casino.playGame(playerDiscordId, bet);
+        Logger.addLog("The Croupier hand is over 21. Blackjack Game was ended successfully.", "BlackJack");
+        return "You won " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
+                + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
+      }
+      if(croupierHandValue > playerHandValue){
+        Casino.playGame(playerDiscordId, bet * -1);
+        Logger.addLog("The Croupier hand is higher than the Player hand. Blackjack Game was ended successfully.", "BlackJack");
+        return "You lost " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
+                + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
+      }
+      if(croupierHandValue < playerHandValue){
+        Casino.playGame(playerDiscordId, bet);
+        Logger.addLog("The Player hand is higher than the Croupier hand. Blackjack Game was ended successfully.", "BlackJack");
+        return "You won " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
+                + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
+      }
+      if(croupierHandValue == playerHandValue){
+        Casino.playGame(playerDiscordId, 0);
+        Logger.addLog("The Croupier and the Player have the same hand value. Blackjack Game was ended successfully.", "BlackJack");
+        return "The Croupier and you have the same hand value. You get your Money back.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
+                + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
+      }
 
-        return "The Blackjack Game was ended. You are not supposed to see this. Please report this.";
+      return "The Blackjack Game was ended. You are not supposed to see this. Please report this.";
     } catch (IOException e) {
       return "I was unable to get the Player hand. You may want to report this Error: \n" + e;
     } catch (SQLException e) {
@@ -532,7 +543,18 @@ class CasinoGames {
     return embedText;
   }
 
-  public static void blackjack(int bet, User user, SlashCommandInteractionEvent event) throws IOException {
+  public static void blackjack(int bet, User user, SlashCommandInteractionEvent event) throws IOException, SQLException {
+    long userMoney = Casino.getMoney(user.getId());
+
+    if(userMoney < bet){
+      EmbedBuilder embed = Helper.defaultEmbed();
+      embed.setTitle("Blackjack");
+      embed.setDescription("You don't have enough Money. You only have " + userMoney +".");
+      embed.setFooter("tanjun.java Casino");
+      event.getHook().editOriginalEmbeds(embed.build()).queue();
+      return;
+    }
+
     BlackJack blackJackGame = new BlackJack(1);
     String result = blackJackGame.startGame(bet, user.getId());
     EmbedBuilder embed = Helper.defaultEmbed();
@@ -706,6 +728,11 @@ public class CasinoCommands extends ListenerAdapter {
           } catch (IOException e) {
             embed.setTitle("Blackjack Error");
             embed.setDescription("I was unable to run the Blackjack command because I could not write to the logs. You may want to report this Error: \n" + e);
+            embed.setFooter("tanjun.java Casino");
+            event.getHook().editOriginalEmbeds(embed.build()).queue();
+          } catch (SQLException e) {
+            embed.setTitle("Blackjack Error");
+            embed.setDescription("I was unable to run the Blackjack command because I can't do SQL. You may want to report this Error: \n" + e);
             embed.setFooter("tanjun.java Casino");
             event.getHook().editOriginalEmbeds(embed.build()).queue();
           }
