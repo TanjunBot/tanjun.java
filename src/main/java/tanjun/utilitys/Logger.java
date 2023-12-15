@@ -70,7 +70,7 @@ public abstract class Logger {
 
 
 
-
+/*
   public static void main(String[] args) throws IOException {
     long start = System.currentTimeMillis();
     for (int i = 0; i < 10_000; i++) {
@@ -80,4 +80,5 @@ public abstract class Logger {
 
     System.out.println((int)(end - start) / 1000);
   }
+*/
 }
