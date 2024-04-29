@@ -96,6 +96,12 @@ public class Helper {
     }
   }
 
+  /**
+   * Converts ms into a different time that makes sence e.g. minutes
+   * @param uptimeMs the ms that should be converted
+   * @param localizer the localizator
+   * @return the formated ms
+   */
   public static String formatUptime(long uptimeMs, Localizer localizer) {
     long seconds = uptimeMs / 1000;
     if (seconds < 60) {

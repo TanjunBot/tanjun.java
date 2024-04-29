@@ -19,8 +19,6 @@ import tanjun.utilitys.Localizer;
 import tanjun.utilitys.Logger;
 import io.github.cdimascio.dotenv.Dotenv;
 
-import java.util.Locale;
-
 import static tanjun.utilitys.EnvAsserter.assertEnv;
 
 public class Main {
