@@ -69,4 +69,54 @@ public class Helper {
     return newArray;
   }
 
+  /**
+   * Converts the given number of bytes into a human-readable string representation.
+   *
+   * @param bytes the number of bytes to format
+   * @return a string representing the formatted size, e.g., "10 KB", "5.5 MB", etc.
+   * @throws IllegalArgumentException if the provided number of bytes is negative
+   */
+  public static String formatBytes(long bytes) {
+    if (bytes < 0) {
+      throw new IllegalArgumentException("Bytes cannot be negative");
+    }
+
+    if (bytes < 1024) {
+      return bytes + " bytes";
+    } else if (bytes < 1024 * 1024) {
+      return bytes / 1024 + " KB";
+    } else if (bytes < 1024 * 1024 * 1024) {
+      return String.format("%.2f MB", bytes / (1024.0 * 1024));
+    } else if (bytes < 1024L * 1024 * 1024 * 1024) {
+      return String.format("%.2f GB", bytes / (1024.0 * 1024 * 1024));
+    } else if (bytes < 1024L * 1024 * 1024 * 1024 * 1024) {
+      return String.format("%.2f TB", bytes / (1024.0 * 1024 * 1024 * 1024));
+    } else {
+      return String.format("%.2f EB", bytes / (1024.0 * 1024 * 1024 * 1024 * 1024 * 1024));
+    }
+  }
+
+  public static String formatUptime(long uptimeMs) {
+    long seconds = uptimeMs / 1000;
+    if (seconds < 60) {
+      return seconds + " seconds";
+    }
+    long minutes = seconds / 60;
+    if (minutes < 60) {
+      return minutes + " minutes";
+    }
+    long hours = minutes / 60;
+    if (hours < 24) {
+      return hours + " hours";
+    }
+    long days = hours / 24;
+    if (days < 30) {
+      return days + " days";
+    }
+    long months = days / 30;
+    return months + " months";
+  }
+
+
+
 }

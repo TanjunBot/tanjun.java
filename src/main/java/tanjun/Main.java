@@ -55,6 +55,8 @@ public class Main {
     jda.updateCommands().addCommands(
             Commands.slash("ping", "Calculate ping of the bot")
                     .setLocalizationFunction(localizer.localizationFunction),
+            Commands.slash("usage", "The Usage")
+                    .setLocalizationFunction(localizer.localizationFunction),
             Commands.slash("ban", "Ban a user from the server")
                     .setLocalizationFunction(localizer.localizationFunction)
                     .setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS))
