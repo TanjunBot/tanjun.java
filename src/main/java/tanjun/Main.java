@@ -33,9 +33,6 @@ public class Main {
 
     Localizer localizer = new Localizer();
 
-    Locale enLocale = Locale.forLanguageTag("en");
-    Localizer enLocalizer = new Localizer(enLocale);
-
     JDA jda = JDABuilder.createDefault(token)
             .addEventListeners(new UtilityCommands())
             .addEventListeners(new FunCommands())
