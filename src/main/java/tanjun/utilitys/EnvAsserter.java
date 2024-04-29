@@ -33,10 +33,10 @@ public class EnvAsserter {
             System.out.println("Tenor API key not set. Please go to https://developers.google.com/tenor/guides/quickstart" +
                     " and generate a follow the instructions to generate a Tenor API key and Enter it: ");
             Scanner in = new Scanner(System.in);
-            String token = in.nextLine();
+            String tenorApiKey = in.nextLine();
             BufferedWriter writer = new BufferedWriter(new FileWriter(".env", true));
             writer.append("TenorApiKey=");
-            writer.append(token);
+            writer.append(tenorApiKey);
             writer.append('\n');
             writer.close();
         }
@@ -45,10 +45,10 @@ public class EnvAsserter {
             System.out.println("The Default Localisation for Tanjun.java was not found. Please enter what the main" +
                     " Language of the Bot will be. Currently Supported: 'de', 'en': ");
             Scanner in = new Scanner(System.in);
-            String token = in.nextLine();
+            String defaultLocale = in.nextLine();
             BufferedWriter writer = new BufferedWriter(new FileWriter(".env", true));
             writer.append("DefaultLocale=");
-            writer.append(token);
+            writer.append(defaultLocale);
             writer.append('\n');
             writer.close();
         }
@@ -58,10 +58,10 @@ public class EnvAsserter {
                     " dont know what to enter here, please refer to " +
                     "https://www.javatpoint.com/example-to-connect-to-the-mysql-database: ");
             Scanner in = new Scanner(System.in);
-            String token = in.nextLine();
+            String databaseUrl = in.nextLine();
             BufferedWriter writer = new BufferedWriter(new FileWriter(".env", true));
             writer.append("DatabaseUrl=");
-            writer.append(token);
+            writer.append(databaseUrl);
             writer.append('\n');
             writer.close();
         }
@@ -69,10 +69,10 @@ public class EnvAsserter {
         if (dotenv.get("DatabaseUsername") == null){
             System.out.println("The Username from your Database User is not set. Please enter it: ");
             Scanner in = new Scanner(System.in);
-            String token = in.nextLine();
+            String databaseUsername = in.nextLine();
             BufferedWriter writer = new BufferedWriter(new FileWriter(".env", true));
             writer.append("DatabaseUsername=");
-            writer.append(token);
+            writer.append(databaseUsername);
             writer.append('\n');
             writer.close();
         }
@@ -80,10 +80,23 @@ public class EnvAsserter {
         if (dotenv.get("DatabasePassword") == null){
             System.out.println("The Password from your Database User is not set. Please enter it: ");
             Scanner in = new Scanner(System.in);
-            String token = in.nextLine();
+            String databasePassword = in.nextLine();
             BufferedWriter writer = new BufferedWriter(new FileWriter(".env", true));
             writer.append("DatabasePassword=");
-            writer.append(token);
+            writer.append(databasePassword);
+            writer.append('\n');
+            writer.close();
+        }
+
+        if (dotenv.get("MaxLogFileSize") == null){
+            System.out.println("The max file size for the log file is not set. Please enter the file size in Bytes" +
+                    " (e.g. 1048576 = 1MB (1024*1024): ");
+            Scanner in = new Scanner(System.in);
+            int maxFileSize = in.nextInt();
+            System.out.println(maxFileSize);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(".env", true));
+            writer.append("MaxLogFileSize=");
+            writer.append(String.valueOf(maxFileSize));
             writer.append('\n');
             writer.close();
         }
