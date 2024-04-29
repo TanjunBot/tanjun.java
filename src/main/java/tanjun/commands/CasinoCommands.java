@@ -296,9 +296,9 @@ class CasinoGames {
 
 
     if (win > 0) {
-      embedText += localizer.localize("commands.casino.slots.embed.description.moneyWon", win);
+      embedText += Localizer.localize("commands.casino.slots.embed.description.moneyWon", win);
     } else {
-      embedText += localizer.localize("commands.casino.slots.embed.description.moneyLost", bet);
+      embedText += Localizer.localize("commands.casino.slots.embed.description.moneyLost", bet);
     }
 
     embedText += "\n\n```\n🍒🍒 ➤ *2    🍒🍒🍒 ➤ *3\n" +
@@ -308,7 +308,7 @@ class CasinoGames {
             "🍇🍇 ➤ *6    🍇🍇🍇 ➤ *15\n" +
             "💎💎 ➤ *7    💎💎💎 ➤ *20\n```\n";
 
-    embedText += "\n\n" + localizer.localize("commands.casino.slots.embed.description.newBalance", Casino.getMoney(user.getId()));
+    embedText += "\n\n" + Localizer.localize("commands.casino.slots.embed.description.newBalance", Casino.getMoney(user.getId()));
 
     return embedText;
   }

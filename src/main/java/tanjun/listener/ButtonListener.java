@@ -50,7 +50,6 @@ public class ButtonListener extends ListenerAdapter {
           buttons.add(Button.primary("casino.blackjack.stand", localizer.localize("commands.casino.blackJack.buttons.stand")));
         }
         event.getHook().editOriginalEmbeds(eb.build()).setActionRow(buttons).queue();
-        event.editMessage("You clicked the button!").queue();
       }
         break;
 
@@ -69,7 +68,6 @@ public class ButtonListener extends ListenerAdapter {
         buttons.add(Button.primary("casino.blackjack.drawCard", localizer.localize("commands.casino.blackJack.buttons.draw")).asDisabled());
         buttons.add(Button.primary("casino.blackjack.stand", localizer.localize("commands.casino.blackJack.buttons.stand")).asDisabled());
         event.getHook().editOriginalEmbeds(eb.build()).setActionRow(buttons).queue();
-        event.editMessage("You clicked the button!").queue();
       }
         break;
       default:
