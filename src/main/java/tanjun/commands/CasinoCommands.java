@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.Random;
 
 class CardGame {
-  String[] symbols = {"♤", "♡", "♢", "♧"};
+  String[] symbols = {"♠", "♥", "♦", "♣"};
   String[] numbers = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10",
           "J", "Q", "K"};
 
@@ -143,36 +143,36 @@ class CardGame {
   public String beautifyCards(List<String> hand) {
     String beautifiedCards = "";
 
-    beautifiedCards += "```\n";
+    beautifiedCards += "```ansi\n";
     int handLength = hand.toArray().length;
     for (int j = 0; j < (handLength / 3) + 1; j++) {
+      beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += "⠀⠀_______⠀⠀⠀";
+        if(hand.get(i).substring(1).equals("10"))
+          beautifiedCards += String.format("\u001B[0;2m\u001B[0m⠀\u001B[2;47m⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀⠀⠀⠀\u001B[0m⠀", hand.get(i).substring(1));
+        else
+          beautifiedCards += String.format("\u001B[0;2m\u001B[0m⠀\u001B[2;47m⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀⠀⠀⠀⠀\u001B[0m⠀", hand.get(i).substring(1));
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format("⠀|⠀%s⠀⠀⠀⠀⠀|⠀", hand.get(i).substring(1));
+        beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀\u001B[0m\u001B[2;37m\u001B[2;47m\u001B[2;31m%s\u001B[0m\u001B[2;37m\u001B[2;47m⠀⠀⠀\u001B[0m\u001B[2;37m\u001B[0m⠀", hand.get(i).charAt(0));
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format("⠀|⠀⠀⠀%s⠀⠀⠀|⠀", hand.get(i).charAt(0));
+        beautifiedCards += "⠀\u001B[2;47m⠀⠀⠀ ⠀⠀⠀\u001B[0m⠀";
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += "⠀|⠀⠀⠀⠀⠀⠀⠀|⠀";
+        beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀\u001B[0m\u001B[2;47m\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀⠀\u001B[0m\u001B[2;47m⠀\u001B[0m⠀", hand.get(i).charAt(0));
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format("⠀|⠀⠀⠀%s⠀⠀⠀|⠀", hand.get(i).charAt(0));
+        if(hand.get(i).substring(1).equals("10"))
+          beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀\u001B[0m⠀", hand.get(i).substring(1));
+        else
+        beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀⠀⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀\u001B[0m⠀", hand.get(i).substring(1));
       }
       beautifiedCards += "\n";
-      for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format("⠀|⠀⠀⠀⠀⠀%s⠀|⠀", hand.get(i).substring(1));
-      }
-      beautifiedCards += "\n";
-      for (int i = 0; i < handLength; i++) {
-        beautifiedCards += "⠀⠀‾‾‾‾‾‾‾⠀⠀⠀";
-      }
       beautifiedCards += "\n";
     }
 
