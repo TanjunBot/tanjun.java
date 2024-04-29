@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.interactions.DiscordLocale;
 import net.dv8tion.jda.api.interactions.commands.localization.LocalizationFunction;
 import net.dv8tion.jda.api.interactions.commands.localization.ResourceBundleLocalizationFunction;
 
+import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -54,6 +56,6 @@ public class Localizer {
      */
     public String localize(String key, Object... args) {
         String template = messages.getString(key);
-        return String.format(template, args);
+        return MessageFormat.format(template, args);
     }
 }

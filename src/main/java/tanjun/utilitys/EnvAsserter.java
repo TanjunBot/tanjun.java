@@ -93,10 +93,21 @@ public class EnvAsserter {
                     " (e.g. 1048576 = 1MB (1024*1024): ");
             Scanner in = new Scanner(System.in);
             int maxFileSize = in.nextInt();
-            System.out.println(maxFileSize);
             BufferedWriter writer = new BufferedWriter(new FileWriter(".env", true));
             writer.append("MaxLogFileSize=");
             writer.append(String.valueOf(maxFileSize));
+            writer.append('\n');
+            writer.close();
+        }
+
+        if (dotenv.get("usePersonalLocale") == null){
+            System.out.println("Please specify if you want to use personal locale. (y/n) if set to yes, then the Locale" +
+                    "of the User will be used to translate texts from the Bot rather than the guild Locale: ");
+            Scanner in = new Scanner(System.in);
+            String usePersonalLocale = in.nextLine();
+            BufferedWriter writer = new BufferedWriter(new FileWriter(".env", true));
+            writer.append("usePersonalLocale=");
+            writer.append(usePersonalLocale.equals("y")? "yes" : "no");
             writer.append('\n');
             writer.close();
         }

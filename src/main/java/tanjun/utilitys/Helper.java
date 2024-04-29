@@ -96,25 +96,25 @@ public class Helper {
     }
   }
 
-  public static String formatUptime(long uptimeMs) {
+  public static String formatUptime(long uptimeMs, Localizer localizer) {
     long seconds = uptimeMs / 1000;
     if (seconds < 60) {
-      return seconds + " seconds";
+      return localizer.localize("commands.utility.uptime.seconds", seconds);
     }
     long minutes = seconds / 60;
     if (minutes < 60) {
-      return minutes + " minutes";
+      return localizer.localize("commands.utility.uptime.minutes", minutes);
     }
     long hours = minutes / 60;
     if (hours < 24) {
-      return hours + " hours";
+      return localizer.localize("commands.utility.uptime.hours", hours);
     }
     long days = hours / 24;
     if (days < 30) {
-      return days + " days";
+      return localizer.localize("commands.utility.uptime.days", days);
     }
     long months = days / 30;
-    return months + " months";
+    return localizer.localize("commands.utility.uptime.months", months);
   }
 
 

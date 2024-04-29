@@ -1,25 +1,28 @@
 package tanjun.commands;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import tanjun.utilitys.Helper;
+import tanjun.utilitys.Localizer;
 import tanjun.utilitys.Logger;
 
-import java.awt.*;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.lang.management.ThreadMXBean;
-import java.nio.file.FileStore;
-import java.nio.file.FileSystems;
+import java.util.Locale;
 
 public class UtilityCommands extends ListenerAdapter {
   @Override
   public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    Dotenv dotenv = Dotenv.load();
+    final String usePersonalLocale = dotenv.get("usePersonalLocale");
+    Locale locale = (usePersonalLocale.equals("yes")? event.getUserLocale(): event.getGuildLocale()).toLocale();
+    Localizer localizer = new Localizer(locale);
     if (event.getName().equals("ping")) {
       long time = System.currentTimeMillis();
       try {
@@ -29,8 +32,8 @@ public class UtilityCommands extends ListenerAdapter {
       }
       event.reply("Pong!").
               flatMap(v ->
-                      event.getHook().editOriginalFormat("Pong: %d ms", System.currentTimeMillis() - time
-                      )
+                      event.getHook().editOriginalFormat(localizer.localize("commands.utility.ping.response",
+                              System.currentTimeMillis() - time))
               ).queue();
     }
     if (event.getName().equals("usage")) {
@@ -40,17 +43,17 @@ public class UtilityCommands extends ListenerAdapter {
         throw new RuntimeException(e);
       }
       EmbedBuilder eb = Helper.defaultEmbed();
-      eb.setTitle("System Information");
+      eb.setTitle(localizer.localize("commands.utility.usage.embed.title"));
 
       String cpuInfo = getCPUInfo();
       String memoryInfo = getMemoryInfo();
 
       RuntimeMXBean rb = ManagementFactory.getRuntimeMXBean();
       long uptime = rb.getUptime();
-      String formattedUptime = Helper.formatUptime(uptime);
+      String formattedUptime = Helper.formatUptime(uptime, localizer);
 
 
-      eb.setDescription("```ansi\n\u001b[1;32mUptime: " + formattedUptime + "\n\n" + cpuInfo + "\n" + memoryInfo + "\n```");
+      eb.setDescription("```ansi\n\u001b[1;32m" + localizer.localize("commands.utility.usage.embed.uptime") + ": " + formattedUptime + "\n\n" + cpuInfo + "\n" + memoryInfo + "\n```");
 
       event.replyEmbeds(eb.build()).setEphemeral(true).queue();
     }
@@ -123,3 +126,4 @@ public class UtilityCommands extends ListenerAdapter {
   }
 
 }
+
