@@ -147,31 +147,31 @@ class CardGame {
     int handLength = hand.toArray().length;
     for (int j = 0; j < (handLength / 3) + 1; j++) {
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += "  _______  ";
+        beautifiedCards += "⠀⠀_______⠀⠀⠀";
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format(" |%s      |  ", hand.get(i).substring(1));
+        beautifiedCards += String.format("⠀|⠀%s⠀⠀⠀⠀⠀|⠀", hand.get(i).substring(1));
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format(" |   %s  |  ", hand.get(i).charAt(0));
+        beautifiedCards += String.format("⠀|⠀⠀⠀%s⠀⠀⠀|⠀", hand.get(i).charAt(0));
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += " |      |  ";
+        beautifiedCards += "⠀|⠀⠀⠀⠀⠀⠀⠀|⠀";
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format(" |   %s  |  ", hand.get(i).charAt(0));
+        beautifiedCards += String.format("⠀|⠀⠀⠀%s⠀⠀⠀|⠀", hand.get(i).charAt(0));
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format(" |      %s|  ", hand.get(i).substring(1));
+        beautifiedCards += String.format("⠀|⠀⠀⠀⠀⠀%s⠀|⠀", hand.get(i).substring(1));
       }
       beautifiedCards += "\n";
       for (int i = 0; i < handLength; i++) {
-        beautifiedCards += "  ‾‾‾‾‾‾‾  ";
+        beautifiedCards += "⠀⠀‾‾‾‾‾‾‾⠀⠀⠀";
       }
       beautifiedCards += "\n";
     }
