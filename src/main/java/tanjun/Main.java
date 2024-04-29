@@ -11,6 +11,7 @@ import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import tanjun.api.Casino;
+import tanjun.commands.BlackJack;
 import tanjun.commands.CasinoCommands;
 import tanjun.commands.FunCommands;
 import tanjun.commands.UtilityCommands;
@@ -26,6 +27,12 @@ import java.util.Locale;
 import static tanjun.utilitys.EnvAsserter.assertEnv;
 
 public class Main {
+  static ButtonListener buttonListener = new ButtonListener();
+
+  public static void addBlackJackInstance(String blackjackId, BlackJack blackJackInstance) {
+    buttonListener.addBlackJackInstance(blackjackId, blackJackInstance);
+  }
+
   public static void main(String[] args) throws Exception {
     assertEnv();
     Dotenv dotenv = Dotenv.load();
@@ -33,11 +40,13 @@ public class Main {
 
     Localizer localizer = new Localizer();
 
+
+
     JDA jda = JDABuilder.createDefault(token)
             .addEventListeners(new UtilityCommands())
             .addEventListeners(new FunCommands())
             .addEventListeners(new CasinoCommands())
-            .addEventListeners(new ButtonListener())
+            .addEventListeners(buttonListener)
             .setActivity(Activity.playing(localizer.localize("BotPlaying1")))
             .build();
 

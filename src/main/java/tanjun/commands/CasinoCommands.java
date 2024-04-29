@@ -1,12 +1,15 @@
 package tanjun.commands;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
+import tanjun.Main;
 import tanjun.api.Casino;
+import tanjun.listener.ButtonListener;
 import tanjun.utilitys.Helper;
 import tanjun.utilitys.Logger;
 
@@ -145,32 +148,34 @@ class CardGame {
 
     beautifiedCards += "```ansi\n";
     int handLength = hand.toArray().length;
-    for (int j = 0; j < (handLength / 3) + 1; j++) {
+    int cardsPerLine = 4;
+    System.out.println("hand length: " + handLength);
+    for (int i = 0; i < handLength; i += cardsPerLine) {
       beautifiedCards += "\n";
-      for (int i = 0; i < handLength; i++) {
-        if(hand.get(i).substring(1).equals("10"))
-          beautifiedCards += String.format("\u001B[0;2m\u001B[0m⠀\u001B[2;47m⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀⠀⠀⠀\u001B[0m⠀", hand.get(i).substring(1));
+      for (int j = i; j < Math.min(i + cardsPerLine, handLength); j++) {
+        if(hand.get(j).substring(1).equals("10"))
+          beautifiedCards += String.format("\u001B[0;2m\u001B[0m⠀\u001B[2;47m⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀⠀⠀⠀\u001B[0m⠀", hand.get(j).substring(1));
         else
-          beautifiedCards += String.format("\u001B[0;2m\u001B[0m⠀\u001B[2;47m⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀⠀⠀⠀⠀\u001B[0m⠀", hand.get(i).substring(1));
+          beautifiedCards += String.format("\u001B[0;2m\u001B[0m⠀\u001B[2;47m⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀⠀⠀⠀⠀\u001B[0m⠀", hand.get(j).substring(1));
       }
       beautifiedCards += "\n";
-      for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀\u001B[0m\u001B[2;37m\u001B[2;47m\u001B[2;31m%s\u001B[0m\u001B[2;37m\u001B[2;47m⠀⠀⠀\u001B[0m\u001B[2;37m\u001B[0m⠀", hand.get(i).charAt(0));
+      for (int j = i; j < Math.min(i + cardsPerLine, handLength); j++) {
+        beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀\u001B[0m\u001B[2;37m\u001B[2;47m\u001B[2;31m%s\u001B[0m\u001B[2;37m\u001B[2;47m⠀⠀⠀\u001B[0m\u001B[2;37m\u001B[0m⠀", hand.get(j).charAt(0));
       }
       beautifiedCards += "\n";
-      for (int i = 0; i < handLength; i++) {
+      for (int j = i; j < Math.min(i + cardsPerLine, handLength); j++) {
         beautifiedCards += "⠀\u001B[2;47m⠀⠀⠀ ⠀⠀⠀\u001B[0m⠀";
       }
       beautifiedCards += "\n";
-      for (int i = 0; i < handLength; i++) {
-        beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀\u001B[0m\u001B[2;47m\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀⠀\u001B[0m\u001B[2;47m⠀\u001B[0m⠀", hand.get(i).charAt(0));
+      for (int j = i; j < Math.min(i + cardsPerLine, handLength); j++) {
+        beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀\u001B[0m\u001B[2;47m\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀⠀\u001B[0m\u001B[2;47m⠀\u001B[0m⠀", hand.get(j).charAt(0));
       }
       beautifiedCards += "\n";
-      for (int i = 0; i < handLength; i++) {
-        if(hand.get(i).substring(1).equals("10"))
-          beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀\u001B[0m⠀", hand.get(i).substring(1));
+      for (int j = i; j < Math.min(i + cardsPerLine, handLength); j++) {
+        if(hand.get(j).substring(1).equals("10"))
+          beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀\u001B[0m⠀", hand.get(j).substring(1));
         else
-        beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀⠀⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀\u001B[0m⠀", hand.get(i).substring(1));
+        beautifiedCards += String.format("⠀\u001B[2;47m⠀⠀⠀⠀⠀\u001B[2;31m%s\u001B[0m\u001B[2;47m⠀\u001B[0m⠀", hand.get(j).substring(1));
       }
       beautifiedCards += "\n";
       beautifiedCards += "\n";
@@ -181,240 +186,6 @@ class CardGame {
 
     return beautifiedCards;
   }
-}
-
-class BlackJack extends CardGame {
-  int playerId;
-  int croupierId;
-  String playerDiscordId;
-  int bet;
-
-  /**
-   * Creates a new BlackJack game.
-   *
-   * @param decks the amount of decks.
-   * @throws IOException if the Logger is not reachable.
-   */
-  public BlackJack(int decks) throws IOException {
-    super(decks, 0);
-    Logger.addLog("Creating a new BlackJack game.", "BlackJack");
-  }
-
-  /**
-   * Starts a new BlackJack game.
-   *
-   * @param bet    the amount of Money the User bet.
-   * @param userId the id of the User that started the game.
-   * @return the Cards of the Player. If the Croupier has a Blackjack, the User loses the bet and the according message is returned.
-   */
-  public String startGame(int bet, String userId) {
-
-    try {
-      if(Casino.getMoney(userId) < bet) {
-
-        return "You don't have enough Money you FaceHuman";
-      };
-
-      try {
-        Logger.addLog("Starting a new Blackjack game with " + bet + " Money bet.", "BlackJack");
-      } catch (IOException e) {
-        return "I was unable to start a new Blackjack game. You may want to report this Error: \n" + e;
-      }
-    } catch (SQLException e) {
-      return "I was unable to get the Money. You may want to report this Error: \n" + e;
-    } catch (IOException e) {
-      return "I was unable to get the Money. You may want to report this Error: \n" + e;
-    }
-    try {
-      playerId = addPlayerhand(2);
-    } catch (IOException e) {
-      return "I was unable to add the Player hand. You may want to report this Error: \n" + e;
-    }
-    try {
-      croupierId = addPlayerhand(2);
-    } catch (IOException e) {
-      return "I was unable to add the Croupier hand. You may want to report this Error: \n" + e;
-    }
-    playerDiscordId = userId;
-    bet = this.bet;
-
-    List<String> croupierHand;
-    try {
-      croupierHand = getPlayerhand(croupierId);
-    } catch (IOException e) {
-      return "I was unable to get the Croupier hand. You may want to report this Error: \n" + e;
-    }
-    int croupierHandValue = getCardValue(croupierHand);
-    if (croupierHandValue == 21) {
-      try {
-        if (getCardValue(getPlayerhand(playerId)) == 21) {
-          Casino.playGame(playerDiscordId, 0);
-          return "The Croupier and you have a Blackjack. You get your Money back.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(getPlayerhand(playerId));
-        } else {
-          Casino.playGame(playerDiscordId, bet * -1);
-          return "The Croupier has a Blackjack. You lost " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(getPlayerhand(playerId));
-        }
-      } catch (SQLException e) {
-        try {
-          Logger.addLog("I was unable to play the game. You may want to report this Error: \n" + e, "BlackJack");
-        } catch (IOException ex) {
-          return "I was unable to play the game. You may want to report this Error: \n" + e;
-        }
-      } catch (IOException e) {
-        return "I was unable to play the game. You may want to report this Error: \n" + e;
-      }
-    } else {
-      try {
-        if (getCardValue(getPlayerhand(playerId)) == 21){
-          Casino.playGame(playerDiscordId, bet * 2);
-          return "You have a Blackjack. You won " + bet * 2 + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(getPlayerhand(playerId));
-        }
-      } catch (IOException e) {
-        return "I was unable to get the Player hand. You may want to report this Error: \n" + e;
-      } catch (SQLException e) {
-        return "I was unable to play the game. You may want to report this Error: \n" + e;
-      }
-    }
-    try {
-      return "The Blackjack Game was started.\n" + beautifyCards(getPlayerhand(playerId));
-    } catch (IOException e) {
-      return "I was unable to get the Player hand. You may want to report this Error: \n" + e;
-    }
-  }
-
-  /**
-   * Ends the Blackjack game.
-   * If the Player hand is over 21, the User loses the bet.
-   * If the Croupier hand is over 21, the User wins the bet.
-   * If the Croupier hand is higher than the Player hand, the User loses the bet.
-   * If the Player hand is higher than the Croupier hand, the User wins the bet.
-   * If the Croupier and the Player have the same hand value, the User gets his Money back.
-   * @return the result of the Blackjack game.
-   */
-  public String endGame(){
-    try {
-      Logger.addLog("Ending the Blackjack game.", "BlackJack");
-      List<String> playerHand = getPlayerhand(playerId);
-      int playerHandValue = getCardValue(playerHand);
-      if(playerHandValue > 21){
-        Casino.playGame(playerDiscordId, bet * -1);
-        Logger.addLog("The Player hand is over 21. Blackjack Game was ended successfully.", "BlackJack");
-        return "You lost " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand:\n" + beautifyCards(getPlayerhand(croupierId)) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
-      }
-      while(getCardValue(getPlayerhand(croupierId)) < 17){
-        drawPlayerCard(croupierId);
-      }
-      List<String> croupierHand = getPlayerhand(croupierId);
-      int croupierHandValue = getCardValue(croupierHand);
-      if(croupierHandValue > 21){
-        Casino.playGame(playerDiscordId, bet);
-        Logger.addLog("The Croupier hand is over 21. Blackjack Game was ended successfully.", "BlackJack");
-        return "You won " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
-      }
-      if(croupierHandValue > playerHandValue){
-        Casino.playGame(playerDiscordId, bet * -1);
-        Logger.addLog("The Croupier hand is higher than the Player hand. Blackjack Game was ended successfully.", "BlackJack");
-        return "You lost " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
-      }
-      if(croupierHandValue < playerHandValue){
-        Casino.playGame(playerDiscordId, bet);
-        Logger.addLog("The Player hand is higher than the Croupier hand. Blackjack Game was ended successfully.", "BlackJack");
-        return "You won " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
-      }
-      if(croupierHandValue == playerHandValue){
-        Casino.playGame(playerDiscordId, 0);
-        Logger.addLog("The Croupier and the Player have the same hand value. Blackjack Game was ended successfully.", "BlackJack");
-        return "The Croupier and you have the same hand value. You get your Money back.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand:\n" + beautifyCards(croupierHand) + "\n\nYour Hand:\n" + beautifyCards(playerHand);
-      }
-
-      return "The Blackjack Game was ended. You are not supposed to see this. Please report this.";
-    } catch (IOException e) {
-      return "I was unable to get the Player hand. You may want to report this Error: \n" + e;
-    } catch (SQLException e) {
-      return "I was unable to play the game. You may want to report this Error: \n" + e;
-    }
-
-  }
-
-  /**
-   * Draws a Card for the Player.
-   * If the Player hand is over 21, the User loses the bet.
-   * @return the result of the Card draw.
-   */
-  public String drawBlackjackCard(){
-    try {
-      Logger.addLog("Drawing a Card for Player " + playerId + ".", "BlackJack");
-      String drawnCard = drawCard();
-      playerCards.get(playerId).add(drawnCard);
-      if(getCardValue(getPlayerhand(playerId)) > 21){
-        return endGame();
-      }
-      return "You drew a " + drawnCard + ".\n\nYour new Hand:\n" + beautifyCards(getPlayerhand(playerId));
-    } catch (IOException e) {
-      return "I was unable to draw a Card. You may want to report this Error: \n" + e;
-    }
-  }
-
-  /**
-   * gets the value of the Players Hand.
-   *
-   * @return the value of the Players Hand.
-   */
-  public int getPlayerValue() {
-    try {
-      return getCardValue(getPlayerhand(playerId));
-    } catch (IOException e) {
-      return -1;
-    }
-  }
-
-
-  /**
-   * gets the value of a Hand.
-   *
-   * @param cards the Cards you want to get the value from.
-   * @return the value of the Hand.
-   */
-  public int getCardValue(List<String> cards) {
-    int handValue = 0;
-    int asses = 0;
-
-    for (int i = 0; i < cards.toArray().length; i++) {
-      String card = cards.get(i);
-
-      String cardNumber = card.substring(1);
-      System.out.println("Entering switch with card Value: " + cardNumber);
-      switch (cardNumber) {
-        case "A":
-          handValue += 11;
-          asses++;
-          break;
-        case "J":
-        case "Q":
-        case "K":
-          handValue += 10;
-          break;
-        default:
-          handValue += Integer.parseInt(cardNumber);
-      }
-    }
-    while (handValue > 21 && asses > 0) {
-      handValue -= 10;
-      asses--;
-    }
-
-    return handValue;
-  }
-
-
 }
 
 class CasinoGames {
@@ -563,9 +334,17 @@ class CasinoGames {
     EmbedBuilder embed = Helper.defaultEmbed();
     embed.setTitle("Blackjack");
     embed.setDescription(result);
+    embed.setFooter("tanjun.java Casino");
     List<Button> buttons = new ArrayList<>();
-    buttons.add(Button.primary("casino.blackjack.drawCard", "Draw a Card"));
+    if (blackJackGame.gameIsOver) {
+      buttons.add(Button.primary("casino.blackjack.drawCard", "Draw a Card").asDisabled());
+      buttons.add(Button.primary("casino.blackjack.stand", "Stand").asDisabled());
+    }else {
+      buttons.add(Button.primary("casino.blackjack.drawCard", "Draw a Card"));
+      buttons.add(Button.primary("casino.blackjack.stand", "Stand"));
+    }
     event.getHook().editOriginalEmbeds(embed.build()).setActionRow(buttons).queue();
+    Main.addBlackJackInstance(event.getUser().getId(), blackJackGame);
   }
 }
 
