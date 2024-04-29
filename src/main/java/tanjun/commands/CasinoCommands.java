@@ -280,11 +280,20 @@ class CasinoGames {
     int win = getWin(bet, slotsResult);
     Casino.playGame(user.getId(), win);
 
-    String embedText = String.format("```ansi\n" +
-            "\u001B[0;2m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[2;47m\u001B[2;47m\u001B[2;47m               ⠀" +
-            "\n %s   %s ⠀⠀ %s⠀" +
-            "\n             ⠀  \u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m" +
-            "\n```", slot1Emoji, slot2Emoji, slot3Emoji);
+    String embedText = String.format(
+            "```ansi\n" +
+                    // Top border with stylized title
+                    "\u001b[0;44m\u001b[31m" + "      𝓢𝓛𝓞𝓣 𝓜𝓐𝓒𝓗𝓘𝓝𝓔       " + "\u001b[0m\n" + // Adjusted spacing & color
+                    // Slot line, adjusted for full width
+                    "\u001b[0;44m\u001b[37m" + "      [%s]  [%s]  [%s]   ㅤ " + "\u001b[0m\n" +  // Ensured length consistency
+                    // Bottom border, extended to match the top
+                    "\u001b[0;44m\u001b[37m" + "                          ㅤ " + "\u001b[0m\n" +
+                    "```",
+            slot1Emoji, slot2Emoji, slot3Emoji
+    );
+
+
+
 
     if (win > 0) {
       embedText += localizer.localize("commands.casino.slots.embed.description.moneyWon", win);
@@ -465,7 +474,7 @@ public class CasinoCommands extends ListenerAdapter {
             target = event.getUser();
           }
           embed.setDescription(Commands.infoCommandEmbedDescriptionGenerator(target, localizer));
-          embed.setTitle(localizer.localize("commands.casino.info.embed.title", target.getName()));
+          embed.setTitle(Localizer.localize("commands.casino.info.embed.title", target.getName()));
           embed.setFooter("tanjun.java Casino");
           event.getHook().editOriginalEmbeds(embed.build()).queue();
           break;
