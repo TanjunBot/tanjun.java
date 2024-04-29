@@ -522,8 +522,11 @@ class CasinoGames {
     }
     Casino.playGame(user.getId(), win);
 
-    String embedText = "```\n―――――――――――――――\n|" + slot1Emoji + " | " + slot2Emoji + " | " + slot3Emoji +
-            "|\n―――――――――――――――\n```\n";
+    String embedText = String.format("```ansi\n" +
+            "\u001B[0;2m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[2;47m\u001B[2;47m\u001B[2;47m               ⠀" +
+            "\n %s   %s ⠀⠀ %s⠀" +
+            "\n             ⠀  \u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m" +
+            "\n```", slot1Emoji, slot2Emoji, slot3Emoji);
 
     if (win > 0) {
       embedText += "You won " + win + " Money.";
