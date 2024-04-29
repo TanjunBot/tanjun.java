@@ -92,9 +92,9 @@ public class Casino {
    * @return the amount of Seconds until the user is allowed. if the user is allowed to collect the daily reward, this
    * will be a negative Number.
    */
-  public static long secondsUntillAllowedToCollectDaily(String userid) throws SQLException, IOException {
+  public static long secondsUntilAllowedToCollectDaily(String userid) throws SQLException, IOException {
     addCasinoPlayerIfNotExists(userid);
-    Logger.addLog("trying to find out how many Seconds untill " + userid + " is allowed to receive Casino " +
+    Logger.addLog("trying to find out how many Seconds until " + userid + " is allowed to receive Casino " +
             "Daily reward.", "API");
     Timestamp timestampNow = new Timestamp(System.currentTimeMillis());
     Statement statement = DatabaseConnector.connection.createStatement();
@@ -145,7 +145,7 @@ public class Casino {
     }
     int currentStreak = dailyStreak(userid);
     currentStreak += 1;
-    if (secondsUntillAllowedToCollectDaily(userid) <= -(24 * 60 * 60 * 60)) {
+    if (secondsUntilAllowedToCollectDaily(userid) <= -(24 * 60 * 60 * 60)) {
       currentStreak = 1;
     }
     int reward = ((int) Helper.log(currentStreak, 2) + 1) * 100;

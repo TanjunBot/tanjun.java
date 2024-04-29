@@ -604,7 +604,7 @@ class Commands {
   public static String dailyCommandEmbedDescriptionGenerator(User user) {
     try {
       Logger.addLog("Daily command was run.", user.getId());
-      long secondsUntillAllowedToCollectDaily = Casino.secondsUntillAllowedToCollectDaily(user.getId());
+      long secondsUntillAllowedToCollectDaily = Casino.secondsUntilAllowedToCollectDaily(user.getId());
       if (secondsUntillAllowedToCollectDaily > 0) {
         return "You are not yet allowed to collect the Daily reward. Try again in <t:" + secondsUntillAllowedToCollectDaily + ":r>";
       } else {
