@@ -1,5 +1,6 @@
 package tanjun.commands;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.User;
@@ -11,6 +12,7 @@ import tanjun.Main;
 import tanjun.api.Casino;
 import tanjun.listener.ButtonListener;
 import tanjun.utilitys.Helper;
+import tanjun.utilitys.Localizer;
 import tanjun.utilitys.Logger;
 
 import java.io.IOException;
@@ -19,6 +21,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Random;
 
 class CardGame {
@@ -36,10 +39,10 @@ class CardGame {
    * The Card Game can be used to play any Card Game.
    *
    * @param decks  the amount of decks.
-   * @param jokers the amount of jokers.
+   * @param jokers the amount of jokers. Jokers currently don't work with the beautifier and should therefore not be used.
    * @throws IOException if the Logger is not reachable.
    */
-  public CardGame(int decks, int jokers) throws IOException {
+  public CardGame(int decks, int jokers, Localizer localizer) throws IOException {
     Logger.addLog("Creating card Game with " + decks + " decks and " + jokers + " jokers.", "CardGame");
     for (String s : symbols) {
       for (String number : numbers) {
@@ -149,7 +152,6 @@ class CardGame {
     beautifiedCards += "```ansi\n";
     int handLength = hand.toArray().length;
     int cardsPerLine = 4;
-    System.out.println("hand length: " + handLength);
     for (int i = 0; i < handLength; i += cardsPerLine) {
       beautifiedCards += "\n";
       for (int j = i; j < Math.min(i + cardsPerLine, handLength); j++) {
@@ -247,7 +249,7 @@ class CasinoGames {
    * @throws SQLException if the Database is not reachable.
    * @throws IOException  if the Logger is not reachable.
    */
-  public static String slots(int bet, User user, boolean rigged) throws SQLException, IOException {
+  public static String slots(int bet, User user, boolean rigged, Localizer localizer) throws SQLException, IOException {
     String[] slots;
     String[] slots2;
     String[] slots3;
@@ -275,6 +277,34 @@ class CasinoGames {
 
     String[] slotsResult = {slot1Emoji, slot2Emoji, slot3Emoji};
 
+    int win = getWin(bet, slotsResult);
+    Casino.playGame(user.getId(), win);
+
+    String embedText = String.format("```ansi\n" +
+            "\u001B[0;2m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[2;47m\u001B[2;47m\u001B[2;47m               ⠀" +
+            "\n %s   %s ⠀⠀ %s⠀" +
+            "\n             ⠀  \u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m" +
+            "\n```", slot1Emoji, slot2Emoji, slot3Emoji);
+
+    if (win > 0) {
+      embedText += localizer.localize("commands.casino.slots.embed.description.moneyWon", win);
+    } else {
+      embedText += localizer.localize("commands.casino.slots.embed.description.moneyLost", bet);
+    }
+
+    embedText += "\n\n```\n🍒🍒 ➤ *2    🍒🍒🍒 ➤ *3\n" +
+            "🍋🍋 ➤ *3    🍋🍋🍋 ➤ *5\n" +
+            "🍊🍊 ➤ *4    🍊🍊🍊 ➤ *7\n" +
+            "🍉🍉 ➤ *5    🍉🍉🍉 ➤ *10\n" +
+            "🍇🍇 ➤ *6    🍇🍇🍇 ➤ *15\n" +
+            "💎💎 ➤ *7    💎💎💎 ➤ *20\n```\n";
+
+    embedText += "\n\n" + localizer.localize("commands.casino.slots.embed.description.newBalance", Casino.getMoney(user.getId()));
+
+    return embedText;
+  }
+
+  private static int getWin(int bet, String[] slotsResult) {
     int win = bet * -1;
 
     //at least first two are the same
@@ -291,57 +321,34 @@ class CasinoGames {
     else if (slotsResult[0].equals(slotsResult[2])) {
       win = getSlotswin(bet, slotsResult[0], false);
     }
-    Casino.playGame(user.getId(), win);
-
-    String embedText = String.format("```ansi\n" +
-            "\u001B[0;2m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[2;47m\u001B[2;47m\u001B[2;47m               ⠀" +
-            "\n %s   %s ⠀⠀ %s⠀" +
-            "\n             ⠀  \u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m\u001B[2;47m\u001B[0m" +
-            "\n```", slot1Emoji, slot2Emoji, slot3Emoji);
-
-    if (win > 0) {
-      embedText += "You won " + win + " Money.";
-    } else {
-      embedText += "You lost " + bet + " Money.";
-    }
-
-    embedText += "\n\n```\n🍒🍒 ➤ *2    🍒🍒🍒 ➤ *3\n" +
-            "🍋🍋 ➤ *3    🍋🍋🍋 ➤ *5\n" +
-            "🍊🍊 ➤ *4    🍊🍊🍊 ➤ *7\n" +
-            "🍉🍉 ➤ *5    🍉🍉🍉 ➤ *10\n" +
-            "🍇🍇 ➤ *6    🍇🍇🍇 ➤ *15\n" +
-            "💎💎 ➤ *7    💎💎💎 ➤ *20\n```\n";
-
-    embedText += "\n\nYour new Balance is " + Casino.getMoney(user.getId()) + " Money.";
-
-    return embedText;
+    return win;
   }
 
-  public static void blackjack(int bet, User user, SlashCommandInteractionEvent event) throws IOException, SQLException {
+  public static void blackjack(int bet, User user, SlashCommandInteractionEvent event, Localizer localizer) throws IOException, SQLException {
     long userMoney = Casino.getMoney(user.getId());
 
     if(userMoney < bet){
       EmbedBuilder embed = Helper.defaultEmbed();
-      embed.setTitle("Blackjack");
-      embed.setDescription("You don't have enough Money. You only have " + userMoney +".");
+      embed.setTitle(localizer.localize("commands.casino.blackJack.embed.title"));
+      embed.setDescription(localizer.localize("commands.casino.blackJack.embed.description.error", userMoney));
       embed.setFooter("tanjun.java Casino");
       event.getHook().editOriginalEmbeds(embed.build()).queue();
       return;
     }
 
-    BlackJack blackJackGame = new BlackJack(1);
+    BlackJack blackJackGame = new BlackJack(1, localizer);
     String result = blackJackGame.startGame(bet, user.getId());
     EmbedBuilder embed = Helper.defaultEmbed();
-    embed.setTitle("Blackjack");
+    embed.setTitle(localizer.localize("commands.casino.blackJack.embed.title"));
     embed.setDescription(result);
     embed.setFooter("tanjun.java Casino");
     List<Button> buttons = new ArrayList<>();
     if (blackJackGame.gameIsOver) {
-      buttons.add(Button.primary("casino.blackjack.drawCard", "Draw a Card").asDisabled());
-      buttons.add(Button.primary("casino.blackjack.stand", "Stand").asDisabled());
+      buttons.add(Button.primary("casino.blackjack.drawCard", localizer.localize("commands.casino.blackJack.buttons.draw")).asDisabled());
+      buttons.add(Button.primary("casino.blackjack.stand", localizer.localize("commands.casino.blackJack.buttons.stand")).asDisabled());
     }else {
-      buttons.add(Button.primary("casino.blackjack.drawCard", "Draw a Card"));
-      buttons.add(Button.primary("casino.blackjack.stand", "Stand"));
+      buttons.add(Button.primary("casino.blackjack.drawCard", localizer.localize("commands.casino.blackJack.buttons.draw")));
+      buttons.add(Button.primary("casino.blackjack.stand", localizer.localize("commands.casino.blackJack.buttons.stand")));
     }
     event.getHook().editOriginalEmbeds(embed.build()).setActionRow(buttons).queue();
     Main.addBlackJackInstance(event.getUser().getId(), blackJackGame);
@@ -349,7 +356,7 @@ class CasinoGames {
 }
 
 class Commands {
-  public static String infoCommandEmbedDescriptionGenerator(User target) {
+  public static String infoCommandEmbedDescriptionGenerator(User target, Localizer localizer) {
     try {
       ResultSet infoUser = Casino.getPlayerData(target.getId());
       assert infoUser != null;
@@ -359,98 +366,82 @@ class Commands {
       int dailyStreak = infoUser.getInt("dailyStreak");
       int totalDaily = infoUser.getInt("totalDaily");
       Timestamp lastDaily = infoUser.getTimestamp("lastDaily");
-      String embedDescription = "### Money ➤ " + money + "\n";
-      embedDescription += "### games Played ➤ " + gamesPlayed + "\n";
+      String embedDescription = "### " + Localizer.localize("commands.casino.info.embed.description.money", money) + "\n";
+      embedDescription += "### " + Localizer.localize("commands.casino.info.embed.description.gamesPlayed", gamesPlayed) + "\n";
       if (!(lastPlayed == null)) {
-        embedDescription += "### last Played ➤ <t:" + lastPlayed.getTime() / 1000 + ":R>\n";
+        embedDescription += "### " + Localizer.localize("commands.casino.info.embed.description.lastPlayed.date", lastPlayed.getTime() / 1000) + "\n";
       } else {
-        embedDescription += "### last Played ➤ never\n";
+        embedDescription += "### " + localizer.localize("commands.casino.info.embed.description.lastPlayed.never") + "\n";
       }
-      embedDescription += "### current Daily Streak ➤ " + dailyStreak + "\n";
-      embedDescription += "### total Daily collected ➤ " + totalDaily + "\n";
+      embedDescription += "### " + Localizer.localize("commands.casino.info.embed.description.currentDailyStreak", dailyStreak) + "\n";
+      embedDescription += "### " + Localizer.localize("commands.casino.info.embed.description.totalDailyCollected", totalDaily) + "\n";
       if (!(lastDaily == null)) {
-        embedDescription += "### last Daily collected ➤ <t:" + lastDaily.getTime() / 1000 + ":R>";
+        embedDescription += "### " + Localizer.localize("commands.casino.info.embed.description.lastDailyCollected.date", lastDaily.getTime() / 1000);
       } else {
-        embedDescription += "### last Daily collected ➤ never";
+        embedDescription += "### "+ localizer.localize("commands.casino.info.embed.description.lastDailyCollected.never");
       }
       return embedDescription;
-    } catch (SQLException e) {
-      return "I was unable to fetch the Information from " + target.getName() +
-              " from the Database. You may want to report this Error: \n" + e;
-    } catch (IOException e) {
-      return "I was unable to fetch the Information from " + target.getName() +
-              " because I could not write to the logs. You may want to report this Error: \n" + e;
+    } catch (SQLException | IOException e) {
+      return Localizer.localize("commands.casino.info.embed.description.error", target.getName(), e);
     }
   }
 
-  public static String dailyCommandEmbedDescriptionGenerator(User user) {
+  public static String dailyCommandEmbedDescriptionGenerator(User user, Localizer localizer) {
     try {
       Logger.addLog("Daily command was run.", user.getId());
       long secondsUntilAllowedToCollectDaily = Casino.secondsUntilAllowedToCollectDaily(user.getId());
       if (secondsUntilAllowedToCollectDaily > 0) {
         long timeUntilCooldownOver = (System.currentTimeMillis() / 1000) + secondsUntilAllowedToCollectDaily;
-        return "You are not yet allowed to collect the Daily reward. Try again in <t:" + timeUntilCooldownOver + ":R>";
+        return Localizer.localize("commands.casino.daily.embed.description.error.notYetAllowed", timeUntilCooldownOver);
       } else {
         int reward = Casino.claimDaily(user.getId());
-        return "You successfully claimed your Daily reward. You gained " + reward + " Money.";
+        return Localizer.localize("commands.casino.daily.embed.description.success", reward);
       }
-    } catch (SQLException e) {
-      return "I was unable to give you your Daily reward" +
-              " from the Database. You may want to report this Error: \n" + e;
-    } catch (IOException e) {
-      return "I was unable to give you your Daily reward" +
-              " because I could not write to the logs. You may want to report this Error: \n" + e;
+    } catch (SQLException | IOException e) {
+      return Localizer.localize("commands.casino.daily.embed.description.error", e);
     }
   }
 
-  public static String transferCommandEmbedDescriptionGenerator(User sender, User receiver, int amount) {
+  public static String transferCommandEmbedDescriptionGenerator(User sender, User receiver, int amount, Localizer localizer) {
     try {
       Logger.addLog("Transfer command was run.", sender.getId());
     } catch (IOException e) {
-      return "I was unable to run the Transfer command because I could not write to the logs. You may want to report this Error: \n" + e;
+      return localizer.localize("commands.casino.transfer.embed.description.error");
     }
     if (receiver == null) {
-      return "Please specify a User you want to send the Money.";
+      return localizer.localize("commands.casino.transfer.embed.description.error.noReceiver");
     }
     if (amount <= 0) {
-      return "Please specify a valid amount of Money you want to send.";
+      return localizer.localize("commands.casino.transfer.embed.description.error.amountInvalid");
     }
     try {
       boolean transferSuccessfully = Casino.transferMoney(sender.getId(), receiver.getId(), amount);
       if (!transferSuccessfully) {
-        return "The transfer was unsuccessful. Make shure you have enough Money.";
+        return localizer.localize("commands.casino.transfer.embed.description.error.transferNotSuccessfully");
       }
-      return "You successfully transferred " + amount + " Money to " + receiver.getAsMention() + ".";
-    } catch (SQLException e) {
-      return "I was unable to transfer the Money to " + receiver.getAsMention() +
-              " from the Database. You may want to report this Error: \n" + e;
-    } catch (IOException e) {
-      return "I was unable to transfer the Money to " + receiver.getAsMention() +
-              " because I could not write to the logs. You may want to report this Error: \n" + e;
+      return Localizer.localize("commands.casino.transfer.embed.description.success", amount, receiver.getAsMention());
+    } catch (SQLException | IOException e) {
+      return localizer.localize("commands.casino.transfer.embed.description.error");
     }
   }
 
-  public static String slotsCommandEmbedDescriptionGenerator(User user, int bet) {
+  public static String slotsCommandEmbedDescriptionGenerator(User user, int bet, Localizer localizer) {
     try {
       Logger.addLog("Slots command was run.", user.getId());
     } catch (IOException e) {
-      return "I was unable to run the Slots command because I could not write to the logs. You may want to report this Error: \n" + e;
+      return Localizer.localize("commands.casino.slots.embed.description.error", e);
     }
     if (bet < 0) {
-      return "Please specify a valid amount of Money you want to bet.";
+      return localizer.localize("commands.casino.slots.embed.description.amountInvalid");
     }
     try {
       long money = Casino.getMoney(user.getId());
       if (money < bet) {
-        return "You don't have enough Money to bet that much.";
+        return localizer.localize("commands.casino.slots.embed.description.notEnoughMoney");
       }
-      return CasinoGames.slots(bet, user, true);
-    } catch (SQLException e) {
-      return "I was unable to run the Slots command" +
-              " from the Database. You may want to report this Error: \n" + e;
-    } catch (IOException e) {
-      return "I was unable to run the Slots command" +
-              " because I could not write to the logs. You may want to report this Error: \n" + e;
+      return CasinoGames.slots(bet, user, true, localizer);
+    } catch (SQLException | IOException e) {
+      return localizer.localize("commands.casino.slots.embed.description.error", e);
     }
   }
 }
@@ -458,6 +449,10 @@ class Commands {
 public class CasinoCommands extends ListenerAdapter {
   @Override
   public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    Dotenv dotenv = Dotenv.load();
+    final String usePersonalLocale = dotenv.get("usePersonalLocale");
+    Locale locale = (usePersonalLocale.equals("yes")? event.getUserLocale(): event.getGuildLocale()).toLocale();
+    Localizer localizer = new Localizer(locale);
     String eventName = event.getName();
     String subcommandName = event.getSubcommandName();
     if (eventName.equals("casino")) {
@@ -469,15 +464,15 @@ public class CasinoCommands extends ListenerAdapter {
           if (target == null) {
             target = event.getUser();
           }
-          embed.setDescription(Commands.infoCommandEmbedDescriptionGenerator(target));
-          embed.setTitle("Casino Information from " + target.getName() + ".");
+          embed.setDescription(Commands.infoCommandEmbedDescriptionGenerator(target, localizer));
+          embed.setTitle(localizer.localize("commands.casino.info.embed.title", target.getName()));
           embed.setFooter("tanjun.java Casino");
           event.getHook().editOriginalEmbeds(embed.build()).queue();
           break;
         }
         case "daily": {
-          embed.setTitle("Daily Reward");
-          embed.setDescription(Commands.dailyCommandEmbedDescriptionGenerator(event.getUser()));
+          embed.setTitle(localizer.localize("commands.casino.daily.embed.title"));
+          embed.setDescription(Commands.dailyCommandEmbedDescriptionGenerator(event.getUser(), localizer));
           embed.setFooter("tanjun.java Casino");
           event.getHook().editOriginalEmbeds(embed.build()).queue();
           break;
@@ -486,8 +481,8 @@ public class CasinoCommands extends ListenerAdapter {
           User target = event.getOption("user", OptionMapping::getAsUser);
           User sender = event.getUser();
           int amount = event.getOption("amount", OptionMapping::getAsInt);
-          embed.setTitle("Transfer Money");
-          embed.setDescription(Commands.transferCommandEmbedDescriptionGenerator(sender, target, amount));
+          embed.setTitle(localizer.localize("commands.casino.transfer.embed.title"));
+          embed.setDescription(Commands.transferCommandEmbedDescriptionGenerator(sender, target, amount, localizer));
           embed.setFooter("tanjun.java Casino");
           event.getHook().editOriginalEmbeds(embed.build()).queue();
           break;
@@ -495,8 +490,8 @@ public class CasinoCommands extends ListenerAdapter {
         case "slots": {
           User user = event.getUser();
           int bet = event.getOption("amount", OptionMapping::getAsInt);
-          embed.setTitle("Slots");
-          embed.setDescription(Commands.slotsCommandEmbedDescriptionGenerator(user, bet));
+          embed.setTitle(localizer.localize("commands.casino.slots.embed.title"));
+          embed.setDescription(Commands.slotsCommandEmbedDescriptionGenerator(user, bet, localizer));
           embed.setFooter("tanjun.java Casino");
           event.getHook().editOriginalEmbeds(embed.build()).queue();
           break;
@@ -506,20 +501,15 @@ public class CasinoCommands extends ListenerAdapter {
           User user = event.getUser();
           int bet = event.getOption("amount", OptionMapping::getAsInt);
           try {
-            CasinoGames.blackjack(bet, user, event);
+            CasinoGames.blackjack(bet, user, event, localizer);
             return;
-          } catch (IOException e) {
-            embed.setTitle("Blackjack Error");
-            embed.setDescription("I was unable to run the Blackjack command because I could not write to the logs. You may want to report this Error: \n" + e);
-            embed.setFooter("tanjun.java Casino");
-            event.getHook().editOriginalEmbeds(embed.build()).queue();
-          } catch (SQLException e) {
-            embed.setTitle("Blackjack Error");
-            embed.setDescription("I was unable to run the Blackjack command because I can't do SQL. You may want to report this Error: \n" + e);
+          } catch (IOException | SQLException e) {
+            embed.setTitle(localizer.localize("commands.casino.blackJack.error.embed.title"));
+            embed.setDescription(localizer.localize("commands.casino.blackJack.error.embed.description", e));
             embed.setFooter("tanjun.java Casino");
             event.getHook().editOriginalEmbeds(embed.build()).queue();
           }
-          break;
+            break;
         }
         case null:
           try {

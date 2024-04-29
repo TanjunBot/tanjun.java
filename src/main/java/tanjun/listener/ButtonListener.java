@@ -1,16 +1,15 @@
 package tanjun.listener;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.interaction.component.ButtonInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.components.buttons.Button;
 import tanjun.commands.BlackJack;
 import tanjun.utilitys.Helper;
+import tanjun.utilitys.Localizer;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ButtonListener extends ListenerAdapter {
   private final Map<String, BlackJack> blackJackMap = new HashMap<>();
@@ -21,6 +20,10 @@ public class ButtonListener extends ListenerAdapter {
 
     @Override
   public void onButtonInteraction(ButtonInteractionEvent event) {
+      Dotenv dotenv = Dotenv.load();
+      final String usePersonalLocale = dotenv.get("usePersonalLocale");
+      Locale locale = (usePersonalLocale.equals("yes")? event.getUserLocale(): event.getGuildLocale()).toLocale();
+      Localizer localizer = new Localizer(locale);
     if (event.getButton().getId() == null) {
       event.editMessage("The button you clicked does not exist or has no ID. Please report this.").queue();
       return;
@@ -30,7 +33,7 @@ public class ButtonListener extends ListenerAdapter {
       case "casino.blackjack.drawCard": {
         BlackJack blackJack = blackJackMap.get(event.getUser().getId());
         if (blackJack == null) {
-          event.reply("The BlackJack game does not belong to you.").setEphemeral(true).queue();
+          event.reply(localizer.localize("commands.casino.blackjack.buttons.belongsNotToYou")).setEphemeral(true).queue();
           return;
         }
         String result = blackJack.drawBlackjackCard();
@@ -40,11 +43,11 @@ public class ButtonListener extends ListenerAdapter {
         eb.setFooter("Tanjun.java Blackjack");
         List<Button> buttons = new ArrayList<>();
         if (blackJack.gameIsOver) {
-          buttons.add(Button.primary("casino.blackjack.drawCard", "Draw a Card").asDisabled());
-          buttons.add(Button.primary("casino.blackjack.stand", "Stand").asDisabled());
+          buttons.add(Button.primary("casino.blackjack.drawCard", localizer.localize("commands.casino.blackJack.buttons.draw")).asDisabled());
+          buttons.add(Button.primary("casino.blackjack.stand", localizer.localize("commands.casino.blackJack.buttons.stand")).asDisabled());
         } else {
-          buttons.add(Button.primary("casino.blackjack.drawCard", "Draw a Card"));
-          buttons.add(Button.primary("casino.blackjack.stand", "Stand"));
+          buttons.add(Button.primary("casino.blackjack.drawCard", localizer.localize("commands.casino.blackJack.buttons.draw")));
+          buttons.add(Button.primary("casino.blackjack.stand", localizer.localize("commands.casino.blackJack.buttons.stand")));
         }
         event.getHook().editOriginalEmbeds(eb.build()).setActionRow(buttons).queue();
         event.editMessage("You clicked the button!").queue();
@@ -54,7 +57,7 @@ public class ButtonListener extends ListenerAdapter {
       case "casino.blackjack.stand": {
         BlackJack blackJack = blackJackMap.get(event.getUser().getId());
         if (blackJack == null) {
-          event.reply("The BlackJack game does not belong to you.").setEphemeral(true).queue();
+          event.reply(localizer.localize("commands.casino.blackjack.buttons.belongsNotToYou")).setEphemeral(true).queue();
           return;
         }
         String result = blackJack.endGame();
@@ -63,8 +66,8 @@ public class ButtonListener extends ListenerAdapter {
         eb.setDescription(result);
         eb.setFooter("Tanjun.java Blackjack");
         List<Button> buttons = new ArrayList<>();
-        buttons.add(Button.primary("casino.blackjack.drawCard", "Draw a Card").asDisabled());
-        buttons.add(Button.primary("casino.blackjack.stand", "Stand").asDisabled());
+        buttons.add(Button.primary("casino.blackjack.drawCard", localizer.localize("commands.casino.blackJack.buttons.draw")).asDisabled());
+        buttons.add(Button.primary("casino.blackjack.stand", localizer.localize("commands.casino.blackJack.buttons.stand")).asDisabled());
         event.getHook().editOriginalEmbeds(eb.build()).setActionRow(buttons).queue();
         event.editMessage("You clicked the button!").queue();
       }

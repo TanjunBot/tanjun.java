@@ -1,6 +1,7 @@
 package tanjun.commands;
 
 import tanjun.api.Casino;
+import tanjun.utilitys.Localizer;
 import tanjun.utilitys.Logger;
 
 import java.io.IOException;
@@ -14,6 +15,7 @@ public class BlackJack extends CardGame {
   String playerDiscordId;
   int bet;
   public boolean gameIsOver = false;
+  Localizer localizer;
 
   /**
    * Creates a new BlackJack game.
@@ -21,8 +23,9 @@ public class BlackJack extends CardGame {
    * @param decks the amount of decks.
    * @throws IOException if the Logger is not reachable.
    */
-  public BlackJack(int decks) throws IOException {
-    super(decks, 0);
+  public BlackJack(int decks, Localizer localizer) throws IOException {
+    super(decks, 0, localizer);
+    this.localizer = localizer;
     Logger.addLog("Creating a new BlackJack game.", "BlackJack");
   }
 
@@ -38,28 +41,26 @@ public class BlackJack extends CardGame {
     try {
       if(Casino.getMoney(userId) < bet) {
 
-        return "You don't have enough Money.";
+        return localizer.localize("blackjack.startGame.notEnoughMoney");
       };
 
       try {
         Logger.addLog("Starting a new Blackjack game with " + bet + " Money bet.", "BlackJack");
       } catch (IOException e) {
-        return "I was unable to start a new Blackjack game. You may want to report this Error: \n" + e;
+        return Localizer.localize("blackjack.startGame.error", e);
       }
-    } catch (SQLException e) {
-      return "I was unable to get the Money. You may want to report this Error: \n" + e;
-    } catch (IOException e) {
-      return "I was unable to get the Money. You may want to report this Error: \n" + e;
+    } catch (SQLException | IOException e) {
+      return Localizer.localize("blackjack.startGame.error", e);
     }
-    try {
+      try {
       playerId = addPlayerhand(2);
     } catch (IOException e) {
-      return "I was unable to add the Player hand. You may want to report this Error: \n" + e;
+      return Localizer.localize("blackjack.startGame.error", e);
     }
     try {
       croupierId = addPlayerhand(2);
     } catch (IOException e) {
-      return "I was unable to add the Croupier hand. You may want to report this Error: \n" + e;
+      return Localizer.localize("blackjack.startGame.error", e);
     }
     playerDiscordId = userId;
     bet = this.bet;
@@ -68,7 +69,7 @@ public class BlackJack extends CardGame {
     try {
       croupierHand = getPlayerhand(croupierId);
     } catch (IOException e) {
-      return "I was unable to get the Croupier hand. You may want to report this Error: \n" + e;
+      return Localizer.localize("blackjack.startGame.error", e);
     }
     int croupierHandValue = getCardValue(croupierHand);
     if (croupierHandValue == 21) {
@@ -78,22 +79,16 @@ public class BlackJack extends CardGame {
         if (getCardValue(getPlayerhand(playerId)) == 21) {
           Casino.playGame(playerDiscordId, 0);
           gameIsOver = true;
-          return "The Croupier and you have a Blackjack. You get your Money back.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand (" + croupierHandValue + "):" + beautifyCards(croupierHand) + "\n\nYour Hand (" + playerHandValue + "):\n" + beautifyCards(getPlayerhand(playerId));
+          return Localizer.localize("blackjack.startGame.drawn", Casino.getMoney(playerDiscordId),
+                  croupierHandValue, beautifyCards(croupierHand), playerHandValue, beautifyCards(getPlayerhand(playerId)));
         } else {
           Casino.playGame(playerDiscordId, bet * -1);
           gameIsOver = true;
-          return "The Croupier has a Blackjack. You lost " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand (" + croupierHandValue + "):\n" + beautifyCards(croupierHand) + "\n\nYour Hand (" + playerHandValue + "):⠀\n" + beautifyCards(getPlayerhand(playerId));
+          return Localizer.localize("blackjack.startGame.lose", bet, Casino.getMoney(playerDiscordId),
+                  croupierHandValue, beautifyCards(croupierHand), playerHandValue, beautifyCards(getPlayerhand(playerId)));
         }
-      } catch (SQLException e) {
-        try {
-          Logger.addLog("I was unable to play the game. You may want to report this Error: \n" + e, "BlackJack");
-        } catch (IOException ex) {
-          return "I was unable to play the game. You may want to report this Error: \n" + e;
-        }
-      } catch (IOException e) {
-        return "I was unable to play the game. You may want to report this Error: \n" + e;
+      } catch (SQLException | IOException e) {
+        return Localizer.localize("blackjack.startGame.error", e);
       }
     } else {
       try {
@@ -102,19 +97,18 @@ public class BlackJack extends CardGame {
           gameIsOver = true;
           List<String> playerHand = getPlayerhand(playerId);
           int playerHandValue = getCardValue(playerHand);
-          return "You have a Blackjack. You won " + bet * 2 + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                  + "\n\nCroupier Hand (" + croupierHandValue + "):\n" + beautifyCards(croupierHand) + "\n\nYour Hand (" + playerHandValue + "):⠀\n" + beautifyCards(getPlayerhand(playerId));
+          return Localizer.localize("blackjack.startGame.win", bet, Casino.getMoney(playerDiscordId),
+                  croupierHandValue, beautifyCards(croupierHand), playerHandValue, beautifyCards(getPlayerhand(playerId)));
         }
-      } catch (IOException e) {
-        return "I was unable to get the Player hand. You may want to report this Error: \n" + e;
-      } catch (SQLException e) {
-        return "I was unable to play the game. You may want to report this Error: \n" + e;
+      } catch (IOException | SQLException e) {
+        return Localizer.localize("blackjack.startGame.error", e);
       }
     }
     try {
-      return "The Blackjack Game was started.\nCroupier Hand:\n" + beautifyCards(List.of(getPlayerhand(croupierId).getFirst(), "??")) + "\nYour Hand (" + getPlayerValue() + "):\n" + beautifyCards(getPlayerhand(playerId));
+      return Localizer.localize("blackjack.startGame.started", beautifyCards(List.of(getPlayerhand(croupierId).getFirst(), "??")),
+              getPlayerValue(), beautifyCards(getPlayerhand(playerId)));
     } catch (IOException e) {
-      return "I was unable to get the Player hand. You may want to report this Error: \n" + e;
+      return Localizer.localize("blackjack.startGame.error", e);
     }
   }
 
@@ -138,8 +132,8 @@ public class BlackJack extends CardGame {
         Casino.playGame(playerDiscordId, bet * -1);
         Logger.addLog("The Player hand is over 21. Blackjack Game was ended successfully.", "BlackJack");
         gameIsOver = true;
-        return "You lost " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand (" + croupierHandValue + "):\n" + beautifyCards(getPlayerhand(croupierId)) + "\n\nYour Hand (" + playerHandValue + "):⠀\n" + beautifyCards(playerHand);
+        return Localizer.localize("blackjack.endGame.lose", bet, Casino.getMoney(playerDiscordId),
+                croupierHandValue, beautifyCards(getPlayerhand(croupierId)), playerHandValue, beautifyCards(playerHand));
       }
       while(getCardValue(getPlayerhand(croupierId)) < 17){
         drawPlayerCard(croupierId);
@@ -150,36 +144,31 @@ public class BlackJack extends CardGame {
         Casino.playGame(playerDiscordId, bet);
         Logger.addLog("The Croupier hand is over 21. Blackjack Game was ended successfully.", "BlackJack");
         gameIsOver = true;
-        return "You won " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand (" + croupierHandValue + "):\n" + beautifyCards(croupierHand) + "\n\nYour Hand (" + playerHandValue + "):⠀\n" + beautifyCards(playerHand);
+        return Localizer.localize("blackjack.endGame.win", bet, Casino.getMoney(playerDiscordId),
+                croupierHandValue, beautifyCards(getPlayerhand(croupierId)), playerHandValue, beautifyCards(playerHand));
       }
       if(croupierHandValue > playerHandValue){
         Casino.playGame(playerDiscordId, bet * -1);
         Logger.addLog("The Croupier hand is higher than the Player hand. Blackjack Game was ended successfully.", "BlackJack");
         gameIsOver = true;
-        return "You lost " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand (" + croupierHandValue + "):\n" + beautifyCards(croupierHand) + "\n\nYour Hand (" + playerHandValue + "):⠀\n" + beautifyCards(playerHand);
+        return Localizer.localize("blackjack.endGame.lose", bet, Casino.getMoney(playerDiscordId),
+                croupierHandValue, beautifyCards(getPlayerhand(croupierId)), playerHandValue, beautifyCards(playerHand));
       }
       if(croupierHandValue < playerHandValue){
         Casino.playGame(playerDiscordId, bet);
         Logger.addLog("The Player hand is higher than the Croupier hand. Blackjack Game was ended successfully.", "BlackJack");
         gameIsOver = true;
-        return "You won " + bet + " Money.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand (" + croupierHandValue + "):\n" + beautifyCards(croupierHand) + "\n\nYour Hand (" + playerHandValue + "):⠀\n" + beautifyCards(playerHand);
+        return Localizer.localize("blackjack.endGame.win", bet, Casino.getMoney(playerDiscordId),
+                croupierHandValue, beautifyCards(getPlayerhand(croupierId)), playerHandValue, beautifyCards(playerHand));
       }
-      if(croupierHandValue == playerHandValue){
         Casino.playGame(playerDiscordId, 0);
         Logger.addLog("The Croupier and the Player have the same hand value. Blackjack Game was ended successfully.", "BlackJack");
         gameIsOver = true;
-        return "The Croupier and you have the same hand value. You get your Money back.\n\nYour new Balance is " + Casino.getMoney(playerDiscordId) + " Money."
-                + "\n\nCroupier Hand (" + croupierHandValue + "):\n" + beautifyCards(croupierHand) + "\n\nYour Hand (" + playerHandValue + "):⠀\n" + beautifyCards(playerHand);
-      }
+        return Localizer.localize("blackjack.endGame.drawn", Casino.getMoney(playerDiscordId),
+                croupierHandValue, beautifyCards(getPlayerhand(croupierId)), playerHandValue, beautifyCards(playerHand));
 
-      return "The Blackjack Game was ended. You are not supposed to see this. Please report this.";
-    } catch (IOException e) {
-      return "I was unable to get the Player hand. You may want to report this Error: \n" + e;
-    } catch (SQLException e) {
-      return "I was unable to play the game. You may want to report this Error: \n" + e;
+    } catch (IOException | SQLException e) {
+      return Localizer.localize("blackjack.startGame.error", e);
     }
 
   }
@@ -200,9 +189,10 @@ public class BlackJack extends CardGame {
       List<String> playerHand = getPlayerhand(playerId);
       int playerHandValue = getCardValue(playerHand);
       System.out.println(getPlayerhand(playerId));
-      return "You drew a " + drawnCard + ".\n\nCroupier Hand:\n" + beautifyCards(List.of(getPlayerhand(croupierId).getFirst(), "??")) + "\nYour new Hand (" + playerHandValue + "):\n" + beautifyCards(getPlayerhand(playerId));
+      return Localizer.localize("blackjack.drawCard", drawnCard,
+              beautifyCards(List.of(getPlayerhand(croupierId).getFirst(), "??")), playerHandValue, beautifyCards(getPlayerhand(playerId)));
     } catch (IOException e) {
-      return "I was unable to draw a Card. You may want to report this Error: \n" + e;
+      return Localizer.localize("blackjack.startGame.error", e);
     }
   }
 
@@ -234,7 +224,6 @@ public class BlackJack extends CardGame {
       String card = cards.get(i);
 
       String cardNumber = card.substring(1);
-      System.out.println("Entering switch with card Value: " + cardNumber);
       switch (cardNumber) {
         case "A":
           handValue += 11;

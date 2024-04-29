@@ -11,7 +11,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Localizer {
-    private final ResourceBundle messages;
+    private static ResourceBundle messages = null;
 
     /**
      * The localizeFunction used to localize Discord SlashCommands.
@@ -54,7 +54,7 @@ public class Localizer {
      * @param args the variables that should be inserted to the localisation
      * @return the localised String
      */
-    public String localize(String key, Object... args) {
+    public static String localize(String key, Object... args) {
         String template = messages.getString(key);
         return MessageFormat.format(template, args);
     }
