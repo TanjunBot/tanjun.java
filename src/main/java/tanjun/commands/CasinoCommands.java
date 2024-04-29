@@ -604,9 +604,10 @@ class Commands {
   public static String dailyCommandEmbedDescriptionGenerator(User user) {
     try {
       Logger.addLog("Daily command was run.", user.getId());
-      long secondsUntillAllowedToCollectDaily = Casino.secondsUntilAllowedToCollectDaily(user.getId());
-      if (secondsUntillAllowedToCollectDaily > 0) {
-        return "You are not yet allowed to collect the Daily reward. Try again in <t:" + secondsUntillAllowedToCollectDaily + ":r>";
+      long secondsUntilAllowedToCollectDaily = Casino.secondsUntilAllowedToCollectDaily(user.getId());
+      if (secondsUntilAllowedToCollectDaily > 0) {
+        long timeUntilCooldownOver = (System.currentTimeMillis() / 1000) + secondsUntilAllowedToCollectDaily;
+        return "You are not yet allowed to collect the Daily reward. Try again in <t:" + timeUntilCooldownOver + ":R>";
       } else {
         int reward = Casino.claimDaily(user.getId());
         return "You successfully claimed your Daily reward. You gained " + reward + " Money.";

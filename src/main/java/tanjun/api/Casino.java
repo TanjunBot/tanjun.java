@@ -5,10 +5,8 @@ import tanjun.utilitys.Helper;
 import tanjun.utilitys.Logger;
 
 import java.io.IOException;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
+import java.time.LocalDate;
 
 public class Casino {
   /**
@@ -97,6 +95,9 @@ public class Casino {
     Logger.addLog("trying to find out how many Seconds until " + userid + " is allowed to receive Casino " +
             "Daily reward.", "API");
     Timestamp timestampNow = new Timestamp(System.currentTimeMillis());
+    LocalDate tomorrow = LocalDate.now().plusDays(1);
+    LocalDate midnightTomorrow = tomorrow.atStartOfDay().toLocalDate();
+    Timestamp timestampTomorrowMidnight = Timestamp.valueOf(midnightTomorrow.atStartOfDay());
     Statement statement = DatabaseConnector.connection.createStatement();
     String query = "SELECT lastDaily FROM casinoUser WHERE id = " + userid;
     ResultSet result = statement.executeQuery(query);
@@ -106,10 +107,15 @@ public class Casino {
     }
     Timestamp timestampLastDaily = result.getTimestamp(1);
     if (timestampLastDaily == null) {
+      Logger.addLog("The user with ID " + userid + " has never collected their daily.", "API");
       return -999999999;
     }
-    return (timestampNow.getTime() - timestampLastDaily.getTime()) / 1000;
+    System.out.println("Timestamp last Daily: " + timestampLastDaily);
+    long secondsUntilAllowed = (timestampTomorrowMidnight.getTime() - timestampNow.getTime()) / 1000;
+    Logger.addLog(userid + " is allowed to Collect their Daily reward in " + secondsUntilAllowed + "s.", "API");
+    return secondsUntilAllowed;
   }
+
 
   /**
    * gets the current Casino Daily stream of a Casino Player.

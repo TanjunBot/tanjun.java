@@ -31,8 +31,8 @@ public class Helper {
   }
 
   /**
-   * Adds n days to a Timestamp. Code from http://www.java2s.com/example/java-utility-method/timestamp/adddays-timestamp-date-int-days-dff0f.html
-   * This accounts for change in TimeZones e.g. the german summer and winter time.
+   * Adds n days to a Timestamp. Code from <a href="http://www.java2s.com/example/java-utility-method/timestamp/adddays-timestamp-date-int-days-dff0f.html">...</a>
+   * These accounts for change in TimeZones e.g. the german summer and winter time.
    *
    * @param date The timestamp you want to add the days to.
    * @param days The amount of days you want to add.
