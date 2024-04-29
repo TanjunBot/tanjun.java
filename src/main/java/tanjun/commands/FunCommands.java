@@ -1,15 +1,18 @@
 package tanjun.commands;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.interaction.command.SlashCommandInteractionEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.interactions.commands.OptionMapping;
 import tanjun.utilitys.Helper;
+import tanjun.utilitys.Localizer;
 import tanjun.utilitys.Logger;
 import tanjun.utilitys.TenorApiWrapper;
 
 import java.io.IOException;
+import java.util.Locale;
 
 public class FunCommands extends ListenerAdapter {
   String[] huggingGifs = TenorApiWrapper.GetUrls("hug", 15);
@@ -22,6 +25,10 @@ public class FunCommands extends ListenerAdapter {
 
   @Override
   public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
+    Dotenv dotenv = Dotenv.load();
+    final String usePersonalLocale = dotenv.get("usePersonalLocale");
+    Locale locale = (usePersonalLocale.equals("yes")? event.getUserLocale(): event.getGuildLocale()).toLocale();
+    Localizer localizer = new Localizer(locale);
     String eventName = event.getName();
     String subcommandName = event.getSubcommandName();
     if (eventName.equals("fun")) {
@@ -48,7 +55,7 @@ public class FunCommands extends ListenerAdapter {
                 throw new RuntimeException(e);
               }
               url = Helper.getRandom(huggingGifs);
-              embed.setTitle(event.getUser().getName() + " is hugging " + target.getName());
+              embed.setTitle(localizer.localize("commands.utility.fun.hug.embed.title", event.getUser().getName(), target.getName()));
               break;
             case "eat":
               try {
@@ -57,7 +64,7 @@ public class FunCommands extends ListenerAdapter {
                 throw new RuntimeException(e);
               }
               url = Helper.getRandom(eatGifs);
-              embed.setTitle(event.getUser().getName() + " is eating " + target.getName());
+              embed.setTitle(localizer.localize("commands.utility.fun.eat.embed.title", event.getUser().getName(), target.getName()));
               break;
             case "wave":
               try {
@@ -66,7 +73,7 @@ public class FunCommands extends ListenerAdapter {
                 throw new RuntimeException(e);
               }
               url = Helper.getRandom(waveGifs);
-              embed.setTitle(event.getUser().getName() + " is waving to " + target.getName());
+              embed.setTitle(localizer.localize("commands.utility.fun.wave.embed.title", event.getUser().getName(), target.getName()));
               break;
             case "kiss":
               try {
@@ -75,7 +82,7 @@ public class FunCommands extends ListenerAdapter {
                 throw new RuntimeException(e);
               }
               url = Helper.getRandom(kissGifs);
-              embed.setTitle(event.getUser().getName() + " is kissing " + target.getName());
+              embed.setTitle(localizer.localize("commands.utility.fun.kiss.embed.title", event.getUser().getName(), target.getName()));
               break;
             case "pat":
               try {
@@ -84,7 +91,7 @@ public class FunCommands extends ListenerAdapter {
                 throw new RuntimeException(e);
               }
               url = Helper.getRandom(patGifs);
-              embed.setTitle(event.getUser().getName() + " pats " + target.getName());
+              embed.setTitle(localizer.localize("commands.utility.fun.pat.embed.title", event.getUser().getName(), target.getName()));
               break;
             case "slap":
               try {
@@ -93,7 +100,7 @@ public class FunCommands extends ListenerAdapter {
                 throw new RuntimeException(e);
               }
               url = Helper.getRandom(slapGifs);
-              embed.setTitle(event.getUser().getName() + " slaps " + target.getName());
+              embed.setTitle(localizer.localize("commands.utility.fun.slap.embed.title", event.getUser().getName(), target.getName()));
               break;
             case "boop":
               try {
@@ -102,7 +109,7 @@ public class FunCommands extends ListenerAdapter {
                 throw new RuntimeException(e);
               }
               url = Helper.getRandom(boopGifs);
-              embed.setTitle(event.getUser().getName() + " boops " + target.getName());
+              embed.setTitle(localizer.localize("commands.utility.fun.boop.embed.title", event.getUser().getName(), target.getName()));
               break;
           }
 
