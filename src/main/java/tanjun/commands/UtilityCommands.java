@@ -11,6 +11,7 @@ public class UtilityCommands extends ListenerAdapter {
   public void onSlashCommandInteraction(SlashCommandInteractionEvent event) {
     if (event.getName().equals("ping")) {
       long time = System.currentTimeMillis();
+      long ping;
       try {
         Logger.addLog("Ping command was run.", event.getUser().getId());
       } catch (IOException e) {

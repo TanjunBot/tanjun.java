@@ -24,12 +24,17 @@ public class Main {
     Dotenv dotenv = Dotenv.load();
     final String token = dotenv.get("BotToken");
 
+    final String databaseUrl = dotenv.get("databaseUrl");
+    final String databasePassword = dotenv.get("databasePassword");
+    final String databaseUsername = dotenv.get("databaseUsername");
+
 
     JDA jda = JDABuilder.createDefault(token)
+            .addEventListeners(new UtilityCommands())
             .setActivity(Activity.playing("Tanjun"))
             .build();
 
-    Tanjun tanjun = new Tanjun(jda);
+    Tanjun tanjun = new Tanjun(jda, databaseUrl, databasePassword, databaseUsername);
 
     tanjun.logger.addLog("System", "Bot Started.");
     tanjun.logger.addLog("System", "Initializing slash commands...");
