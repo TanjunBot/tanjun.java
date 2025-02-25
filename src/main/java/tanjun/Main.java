@@ -26,10 +26,6 @@ public class Main {
 
 
     JDA jda = JDABuilder.createDefault(token)
-            .addEventListeners(new UtilityCommands())
-            .addEventListeners(new FunCommands())
-            .addEventListeners(new CasinoCommands())
-            .addEventListeners(new ButtonListener())
             .setActivity(Activity.playing("Tanjun"))
             .build();
 
@@ -43,8 +39,5 @@ public class Main {
     ).queue();
 
     tanjun.logger.addLog("System", "Initialized slash commands");
-
-    DatabaseConnector.connectToDatabase();
-    DatabaseConnector.initiateDatabase();
   }
 }
