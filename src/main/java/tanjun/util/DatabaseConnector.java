@@ -1,15 +1,14 @@
 package tanjun.util;
 
-import java.io.IOException;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.sql.Statement;
 import tanjun.Tanjun;
 
 public class DatabaseConnector {
-  Connection connection;
-  Tanjun tanjun;
+  private final HikariDataSource dataSource;
+  private final Tanjun tanjun;
 
   /**
    * Handles Connection and Communication with the Database.
@@ -20,22 +19,50 @@ public class DatabaseConnector {
    */
   public DatabaseConnector(Tanjun tanjun, String url, String username, String password) {
     this.tanjun = tanjun;
-    connect(url, username, password);
+    this.dataSource = createDataSource(url, username, password);
   }
 
   /**
-   * Establishes a Connection to the database.
+   * Creates and configures the HikariCP connection pool.
    * @param url The URL of the Database.
-   * @param username The name of the Database User.
-   * @param password The password of the Database User.
+   * @param username The database username.
+   * @param password The database password.
+   * @return A configured HikariDataSource.
    */
-  private void connect(String url, String username, String password) {
-    tanjun.logger.addLog("Database", "establishing connection to Database...");
-    try {
-      connection = DriverManager.getConnection(url, username, password);
-      tanjun.logger.addLog("Database", "Database connection established successfully.");
-    } catch (SQLException e) {
-      throw new RuntimeException("Could not connect to database.");
+  private HikariDataSource createDataSource(String url, String username, String password) {
+    tanjun.addLog("Database", "Setting up connection pool...");
+
+    HikariConfig config = new HikariConfig();
+    config.setJdbcUrl(url);
+    config.setUsername(username);
+    config.setPassword(password);
+    config.setMaximumPoolSize(10);  // Max 10 connections in the pool
+    config.setMinimumIdle(2);        // Minimum idle connections
+    config.setIdleTimeout(30000);    // 30 seconds idle timeout
+    config.setMaxLifetime(600000);   // 10 minutes max lifetime
+    config.setConnectionTimeout(3000); // 3 seconds timeout for new connections
+
+    HikariDataSource ds = new HikariDataSource(config);
+    tanjun.addLog("Database", "Connection pool initialized successfully.");
+    return ds;
+  }
+
+  /**
+   * Retrieves a connection from the connection pool.
+   * @return A database connection.
+   * @throws SQLException If unable to get a connection.
+   */
+  public Connection getConnection() throws SQLException {
+    return dataSource.getConnection();
+  }
+
+  /**
+   * Closes the connection pool when shutting down.
+   */
+  public void close() {
+    tanjun.addLog("Database", "Shutting down database connection pool...");
+    if (dataSource != null) {
+      dataSource.close();
     }
   }
 }

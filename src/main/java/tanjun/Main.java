@@ -2,25 +2,16 @@ package tanjun;
 
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.interactions.commands.DefaultMemberPermissions;
 import net.dv8tion.jda.api.interactions.commands.OptionType;
 import net.dv8tion.jda.api.interactions.commands.build.Commands;
 import net.dv8tion.jda.api.interactions.commands.build.OptionData;
 import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
-import tanjun.api.Casino;
-import tanjun.commands.CasinoCommands;
-import tanjun.commands.FunCommands;
-import tanjun.commands.UtilityCommands;
-import tanjun.listener.ButtonListener;
-import tanjun.utilitys.DatabaseConnector;
-import tanjun.utilitys.Helper;
-import tanjun.utilitys.Logger;
+import tanjun.commands.Utility;
 import io.github.cdimascio.dotenv.Dotenv;
 
 public class Main {
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     Dotenv dotenv = Dotenv.load();
     final String token = dotenv.get("BotToken");
 
@@ -30,19 +21,41 @@ public class Main {
 
 
     JDA jda = JDABuilder.createDefault(token)
-            .addEventListeners(new UtilityCommands())
             .setActivity(Activity.playing("Tanjun"))
             .build();
 
-    Tanjun tanjun = new Tanjun(jda, databaseUrl, databasePassword, databaseUsername);
+    Tanjun tanjun = new Tanjun(jda, databaseUrl, databaseUsername, databasePassword);
 
-    tanjun.logger.addLog("System", "Bot Started.");
-    tanjun.logger.addLog("System", "Initializing slash commands...");
+    jda.addEventListener(new Utility(tanjun));
+
+    tanjun.addLog("System", "Bot Started.");
+    tanjun.addLog("System", "Initializing slash commands...");
 
     jda.updateCommands().addCommands(
-            Commands.slash("ping", "Calculate ping of the bot")
+            Commands.slash("ping", "Calculate ping of the bot"),
+            Commands.slash("math", "Math Commands to do some Math things!")
+                    .addSubcommands(
+                            new SubcommandData("fib", "Calculate Fib(n)")
+                                    .addOptions(
+                                            new OptionData(OptionType.INTEGER, "n",
+                                                    "The number fib you want to calculate. e.g. fib(n)",
+                                                    true).setRequiredRange(0, 100),
+                                            new OptionData(
+                                                    OptionType.STRING,
+                                                    "sum_up",
+                                                    "rather you want to sum up the results from fib(0) to fib(n)"
+                                            ).addChoice("Sum Up", "sumup")
+                                                    .addChoice("Don't Sum up", "nosumup")
+                                    ),
+                            new SubcommandData("fac", "Calculate the Faculty of n => n!")
+                                    .addOptions(
+                                            new OptionData(OptionType.INTEGER, "n",
+                                                    "The number that you want to calculate the Faculty of. e.g. n!",
+                                                    true).setRequiredRange(0, 100)
+                                    )
+                    )
     ).queue();
 
-    tanjun.logger.addLog("System", "Initialized slash commands");
+    tanjun.addLog("System", "Initialized slash commands");
   }
 }
