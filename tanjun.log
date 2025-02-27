@@ -1082,3 +1082,152 @@ java.sql.SQLException: Generated keys not requested. You need to specify Stateme
 2025/02/26 16:42:23 - Database: addCommandUse successfully finished. Added 1 line(s)
 2025/02/26 16:42:23 - Ping command: entcheneric(471036610561966111) has run the ping command.
 2025/02/26 16:42:23 - Ping command: Ping command has ran successfull.
+2025/02/27 23:38:11 - Database: Setting up connection pool...
+2025/02/27 23:38:12 - Database: Connection pool initialized successfully.
+2025/02/27 23:38:12 - Database: trying to create Table commandUse
+2025/02/27 23:38:12 - Database: Connection successfully established for creating commandUse table
+2025/02/27 23:38:12 - Database: Successfully created Table commandUse. Affected 0 Row(s)
+2025/02/27 23:38:12 - System: Bot Started.
+2025/02/27 23:38:12 - System: Initializing slash commands...
+2025/02/27 23:38:12 - System: Initialized slash commands
+2025/02/27 23:40:20 - Database: Establishing connection for addCommandUse
+2025/02/27 23:40:20 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:40:20 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:40:20 - Ping command: shuka3307(410510528088113164) has run the ping command.
+2025/02/27 23:40:20 - Ping command: Ping command has ran successfull.
+2025/02/27 23:42:21 - Database: Setting up connection pool...
+2025/02/27 23:42:21 - Database: Connection pool initialized successfully.
+2025/02/27 23:42:21 - Database: trying to create Table commandUse
+2025/02/27 23:42:21 - Database: Connection successfully established for creating commandUse table
+2025/02/27 23:42:21 - Database: Successfully created Table commandUse. Affected 0 Row(s)
+2025/02/27 23:42:21 - System: Bot Started.
+2025/02/27 23:42:21 - System: Initializing slash commands...
+2025/02/27 23:42:21 - System: Initialized slash commands
+2025/02/27 23:43:01 - Database: Establishing connection for addCommandUse
+2025/02/27 23:43:01 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:43:01 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:43:01 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:43:01 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:43:34 - Database: Establishing connection for addCommandUse
+2025/02/27 23:43:34 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:43:34 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:43:34 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:43:34 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:46:39 - Database: Setting up connection pool...
+2025/02/27 23:46:39 - Database: Connection pool initialized successfully.
+2025/02/27 23:46:39 - Database: trying to create Table commandUse
+2025/02/27 23:46:39 - Database: Connection successfully established for creating commandUse table
+2025/02/27 23:46:39 - Database: Successfully created Table commandUse. Affected 0 Row(s)
+2025/02/27 23:46:39 - System: Bot Started.
+2025/02/27 23:46:39 - System: Initializing slash commands...
+2025/02/27 23:46:39 - System: Initialized slash commands
+2025/02/27 23:46:53 - Database: Establishing connection for addCommandUse
+2025/02/27 23:46:53 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:46:53 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:46:53 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:46:53 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:47:45 - Database: Setting up connection pool...
+2025/02/27 23:47:45 - Database: Connection pool initialized successfully.
+2025/02/27 23:47:45 - Database: trying to create Table commandUse
+2025/02/27 23:47:45 - Database: Connection successfully established for creating commandUse table
+2025/02/27 23:47:45 - Database: Successfully created Table commandUse. Affected 0 Row(s)
+2025/02/27 23:47:45 - System: Bot Started.
+2025/02/27 23:47:45 - System: Initializing slash commands...
+2025/02/27 23:47:45 - System: Initialized slash commands
+2025/02/27 23:47:54 - Database: Establishing connection for addCommandUse
+2025/02/27 23:47:54 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:47:54 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:47:54 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:47:54 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:48:24 - Database: Establishing connection for addCommandUse
+2025/02/27 23:48:24 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:48:24 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:48:24 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:48:24 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:49:28 - Database: Setting up connection pool...
+2025/02/27 23:49:28 - Database: Connection pool initialized successfully.
+2025/02/27 23:49:28 - Database: trying to create Table commandUse
+2025/02/27 23:49:28 - Database: Connection successfully established for creating commandUse table
+2025/02/27 23:49:28 - Database: Successfully created Table commandUse. Affected 0 Row(s)
+2025/02/27 23:49:28 - System: Bot Started.
+2025/02/27 23:49:28 - System: Initializing slash commands...
+2025/02/27 23:49:28 - System: Initialized slash commands
+2025/02/27 23:49:47 - Database: Establishing connection for addCommandUse
+2025/02/27 23:49:47 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:49:47 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:49:47 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:49:47 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:49:53 - Database: Establishing connection for addCommandUse
+2025/02/27 23:49:53 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:49:53 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:49:53 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:49:53 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:50:01 - Database: Establishing connection for addCommandUse
+2025/02/27 23:50:01 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:50:01 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:50:01 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:50:01 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:50:37 - Database: Establishing connection for addCommandUse
+2025/02/27 23:50:37 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:50:37 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:50:37 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:50:37 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:51:21 - Database: Setting up connection pool...
+2025/02/27 23:51:21 - Database: Connection pool initialized successfully.
+2025/02/27 23:51:21 - Database: trying to create Table commandUse
+2025/02/27 23:51:21 - Database: Connection successfully established for creating commandUse table
+2025/02/27 23:51:21 - Database: Successfully created Table commandUse. Affected 0 Row(s)
+2025/02/27 23:51:21 - System: Bot Started.
+2025/02/27 23:51:21 - System: Initializing slash commands...
+2025/02/27 23:51:21 - System: Initialized slash commands
+2025/02/27 23:51:32 - Database: Establishing connection for addCommandUse
+2025/02/27 23:51:32 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:51:32 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:51:32 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:51:32 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:51:47 - Database: Establishing connection for addCommandUse
+2025/02/27 23:51:47 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:51:47 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:51:47 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:51:47 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:51:56 - Database: Establishing connection for addCommandUse
+2025/02/27 23:51:56 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:51:56 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:51:56 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:51:56 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:52:15 - Database: Establishing connection for addCommandUse
+2025/02/27 23:52:15 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:52:15 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:52:15 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:52:15 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/27 23:58:04 - Database: Setting up connection pool...
+2025/02/27 23:58:04 - Database: Connection pool initialized successfully.
+2025/02/27 23:58:04 - Database: trying to create Table commandUse
+2025/02/27 23:58:04 - Database: Connection successfully established for creating commandUse table
+2025/02/27 23:58:04 - Database: Successfully created Table commandUse. Affected 0 Row(s)
+2025/02/27 23:58:04 - System: Bot Started.
+2025/02/27 23:58:04 - System: Initializing slash commands...
+2025/02/27 23:58:04 - System: Initialized slash commands
+2025/02/27 23:58:23 - Database: Establishing connection for addCommandUse
+2025/02/27 23:58:23 - Database: Connection successfully established for addCommandUse
+2025/02/27 23:58:23 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/27 23:58:23 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/27 23:58:23 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/28 00:03:22 - Database: Setting up connection pool...
+2025/02/28 00:03:23 - Database: Connection pool initialized successfully.
+2025/02/28 00:03:23 - Database: trying to create Table commandUse
+2025/02/28 00:03:23 - Database: Connection successfully established for creating commandUse table
+2025/02/28 00:03:23 - Database: Successfully created Table commandUse. Affected 0 Row(s)
+2025/02/28 00:03:23 - System: Bot Started.
+2025/02/28 00:03:23 - System: Initializing slash commands...
+2025/02/28 00:03:23 - System: Initialized slash commands
+2025/02/28 00:03:36 - Database: Establishing connection for addCommandUse
+2025/02/28 00:03:36 - Database: Connection successfully established for addCommandUse
+2025/02/28 00:03:36 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/28 00:03:36 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/28 00:03:36 - Math Fac Command: Math Fac command has ran successfull.
+2025/02/28 00:03:48 - Database: Establishing connection for addCommandUse
+2025/02/28 00:03:48 - Database: Connection successfully established for addCommandUse
+2025/02/28 00:03:48 - Database: addCommandUse successfully finished. Added 1 line(s)
+2025/02/28 00:03:48 - Math Fac Command: shuka3307(410510528088113164) has run the Math Fac command.
+2025/02/28 00:03:48 - Math Fac Command: Math Fac command has ran successfull.
