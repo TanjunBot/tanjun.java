@@ -10,9 +10,14 @@ import net.dv8tion.jda.api.interactions.commands.build.SubcommandData;
 import tanjun.commands.Utility;
 import tanjun.commands.Math;
 import io.github.cdimascio.dotenv.Dotenv;
+import tanjun.database.CurrencyConversion;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 public class Main {
-  public static void main(String[] args) {
+  public static void main(String[] args) throws URISyntaxException, IOException {
+
     Dotenv dotenv = Dotenv.load();
     final String token = dotenv.get("BotToken");
 
@@ -25,10 +30,14 @@ public class Main {
             .setActivity(Activity.playing("Tanjun"))
             .build();
 
+
+
     Tanjun tanjun = new Tanjun(jda, databaseUrl, databaseUsername, databasePassword);
 
     jda.addEventListener(new Utility(tanjun));
     jda.addEventListener(new Math(tanjun));
+
+    CurrencyConversion.updateCurrencyConversions(tanjun,tanjun.getDatabaseConnector());
 
     tanjun.addLog("System", "Bot Started.");
     tanjun.addLog("System", "Initializing slash commands...");

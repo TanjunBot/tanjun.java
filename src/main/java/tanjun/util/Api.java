@@ -2,6 +2,7 @@ package tanjun.util;
 
 import tanjun.Tanjun;
 import tanjun.database.CommandUsage;
+import tanjun.database.CurrencyConversion;
 
 import java.sql.Date;
 
@@ -16,10 +17,11 @@ public class Api {
 
   public void createAllTables() {
     CommandUsage.createTableIfNotExist(databaseConnector, tanjun);
+    CurrencyConversion.createTableIfNotExist(databaseConnector, tanjun);
   }
 
-  public CommandUsage addCommandUse(String commandName, long userId) {
+  public void addCommandUse(String commandName, long userId) {
     Date currentDate = new Date(System.currentTimeMillis());
-    return CommandUsage.addCommandUse(commandName, userId, currentDate, databaseConnector, tanjun);
+    CommandUsage.addCommandUse(commandName, userId, currentDate, databaseConnector, tanjun);
   }
 }

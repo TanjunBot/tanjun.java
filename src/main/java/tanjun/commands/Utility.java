@@ -11,6 +11,7 @@ public class Utility extends Command {
   private boolean pingCommand(SlashCommandInteractionEvent event) {
     try {
       long time = System.currentTimeMillis();
+
       tanjun.addLog("Ping command", event.getUser().getName() +
               "(" + event.getUser().getId() + ") has run the ping command.");
       event.reply("Ping: ...").setEphemeral(true).
