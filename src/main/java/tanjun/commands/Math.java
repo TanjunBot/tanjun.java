@@ -48,7 +48,10 @@ public class Math extends Command {
       return false;
     }
   }
+  private double factorial( double n){
 
+    return (n == 0) ? 1 : n * factorial(n - 1);
+  }
   private boolean facCommand(SlashCommandInteractionEvent event) {
     try {
       tanjun.addLog("Math Fac Command", event.getUser().getName() +
@@ -56,11 +59,13 @@ public class Math extends Command {
 
       int n = Objects.requireNonNull(event.getOption("n")).getAsInt();
 
-      long result = 0;
+      double result = factorial(n);
 
-      // calculate result here.
+      if (result < 9_223_372_036_854_775_807L)
+      event.reply(n + "! = `" + (long) result + "`").queue();
+      else
+        event.reply(n + "! = `" + result + "`").queue();
 
-      event.reply(n + "! = `" + result + "`").queue();
       tanjun.addLog("Math Fac Command", "Math Fac command has ran successfull.");
       return true;
     } catch (Exception e) {
